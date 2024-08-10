@@ -6,13 +6,14 @@ from src.tmas.utils import load_image, load_plate_design
 
 def main():
     # Load image
-    image = load_image("data/sample_data/example_image.png")
+    image = load_image("data/sample_data/01-DR0013-DR0013-1-14.png")
     
     # Preprocess image
-    processed_image = preprocess_images(image)
+    # processed_image = preprocess_images(image)
+    processed_image = image
     
     # Detect growth
-    detections = detect_growth(processed_image)
+    detections = detect_growth(processed_image) # return {boxes, labels, scores, inference_time}
     
     # Analyze and extract MIC
     plate_design = load_plate_design()
