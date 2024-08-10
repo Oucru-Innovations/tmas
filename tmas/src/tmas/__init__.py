@@ -1,3 +1,4 @@
-# read version from installed package
-from importlib.metadata import version
-__version__ = version("tmas")
+# tmas/__init__.py
+from .preprocessing import preprocess_images
+from .detection import detect_growth
+from .analysis import analyze_and_extract_mic
