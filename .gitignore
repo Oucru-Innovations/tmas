@@ -150,6 +150,7 @@ dmypy.json
 *.gif
 *.bmp
 *.tiff
+.png
 
 # Ignore large files
 *.zip

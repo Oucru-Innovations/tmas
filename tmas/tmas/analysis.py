@@ -27,10 +27,6 @@ def build_drug_info_dict(plate_info):
 
     return drug_info
 
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import cv2
-
 def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_results, plate_info):
     # Convert the image to RGB if it's not already
     if len(img.shape) == 3 and img.shape[2] == 3:
