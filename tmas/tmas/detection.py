@@ -191,7 +191,7 @@ def map_predictions_to_plate_design(image, predictions, padding, ratio, image_si
     growth_matrix = [["-none-"] * 12 for _ in range(8)]
 
     fig, ax = plt.subplots(1, 1, figsize=(12, 8))
-    ax.imshow(image)
+    # ax.imshow(image)
 
     for row in range(8):
         for col in range(12):
@@ -214,8 +214,8 @@ def map_predictions_to_plate_design(image, predictions, padding, ratio, image_si
                 if x1 <= well_x <= x2 and y1 <= well_y <= y2:
                     growth_matrix[row][col] = "growth"
 
-    plt.axis('off')
-    plt.show()
+    # plt.axis('off')
+    # plt.show()
 
     return growth_matrix
 

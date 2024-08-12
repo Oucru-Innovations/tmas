@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "run_tmas=tmas.scripts.run_tmas:main",
+            "run_tmas=scripts.run_tmas:main",
         ],
     },
     include_package_data=True,
