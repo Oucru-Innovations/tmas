@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="tmas",
     version="0.1.0",
-    package_dir={"": "src"},  # Pointing to the src directory
-    packages=find_packages(where="src"),
+    packages=find_packages(),
     install_requires=[
         "numpy",
         "opencv-python",
@@ -15,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "run_tmas=src.tmas.scripts.run_tmas:main",
+            "run_tmas=tmas.scripts.run_tmas:main",
         ],
     },
     include_package_data=True,
