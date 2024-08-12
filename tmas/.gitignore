@@ -140,3 +140,21 @@ dmypy.json
 
 # MacOS
 .DS_Store
+
+# Ignore image files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+
+# Ignore large files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+
+# Ignore model files
+*.pt

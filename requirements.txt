@@ -1,0 +1,11 @@
+myst-nb
+sphinx-autoapi
+sphinx-rtd-theme
+ultralytics
+torch
+opencv-python
+numpy
+Pillow 
+matplotlib
+scipy
+torchvision

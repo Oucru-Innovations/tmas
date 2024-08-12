@@ -28,8 +28,6 @@ def identify_wells(image, hough_param1=20, hough_param2=25, radius_tolerance=0.0
     well_index = np.zeros(well_dimensions, dtype=int)
     well_radii = np.zeros(well_dimensions, dtype=float)
     well_center = np.zeros((well_dimensions[0], well_dimensions[1], 2), dtype=int)
-    well_top_left = np.zeros((well_dimensions[0], well_dimensions[1], 2), dtype=int)
-    well_bottom_right = np.zeros((well_dimensions[0], well_dimensions[1], 2), dtype=int)
 
     number_of_wells = well_dimensions[0] * well_dimensions[1]
     image_dimensions = image.shape  # Assumes image is already in grayscale
@@ -76,23 +74,17 @@ def identify_wells(image, hough_param1=20, hough_param2=25, radius_tolerance=0.0
             number_of_circles_in_well = 0
 
             for ic in circles[0, ]:
-                if top_left[0] < ic[0] < bottom_right[0]:
-                    if top_left[1] < ic[1] < bottom_right[1]:
-                        number_of_circles_in_well += 1
-                        circle = ic
+                if top_left[0] < ic[0] < bottom_right[0] and top_left[1] < ic[1] < bottom_right[1]:
+                    number_of_circles_in_well += 1
+                    circle = ic
 
             if number_of_circles_in_well == 1:
                 well_centre = (circle[0], circle[1])
                 well_radius = circle[2]
-                well_extent = 1.2 * well_radius
 
                 well_index[iy, ix] = well_counter
                 well_center[iy, ix] = well_centre
                 well_radii[iy, ix] = well_radius
-                well_top_left[iy, ix] = (max(0, int(well_centre[0] - well_extent)),
-                                         max(0, int(well_centre[1] - well_extent)))
-                well_bottom_right[iy, ix] = (min(image_dimensions[1], int(well_centre[0] + well_extent)),
-                                             min(image_dimensions[0], int(well_centre[1] + well_extent)))
                 well_counter += 1
             else:
                 one_circle_per_well = False
@@ -145,14 +137,14 @@ def post_process_detections(image, predictions, padding, ratio):
     growth_matrix = map_predictions_to_plate_design(image, predictions, padding, ratio)
     return growth_matrix
 
-# Function to detect growth and return the processed growth matrix
+# Function to detect growth and return the processed growth matrix and inference time
 def detect_growth(image): 
     # Initialize the YOLO model
     model = YOLOv8()
 
     # Check if CUDA is available and use it if possible
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model.model.to(device)
+    model = model.to(device)
 
     # Resize the image to 512x512 with padding
     padded_img, padding, ratio = resize_with_padding(image)
@@ -164,16 +156,14 @@ def detect_growth(image):
     # Measure inference time
     start_time = time.time()
     # Perform detection
-    results = model(img_tensor)[0]
+    print("checkkkkkk----")
+    results = model.predict(img_tensor)  # Use the predict method here
     inference_time = (time.time() - start_time) * 1000  # Convert to milliseconds
 
-    # Check the type and structure of 'results'
-    print(type(results)) 
-
-    # Extract boxes, labels, and scores (Modify this part based on the structure of 'results')
-    boxes = results.boxes.xyxy.cpu().numpy()  # x1, y1, x2, y2
-    scores = results.boxes.conf.cpu().numpy()
-    labels = results.boxes.cls.cpu().numpy()
+    # Extract boxes, labels, and scores
+    boxes = results[0].boxes.xyxy.cpu().numpy()  # x1, y1, x2, y2
+    scores = results[0].boxes.conf.cpu().numpy()
+    labels = results[0].boxes.cls.cpu().numpy()
 
     # Combine predictions into a single array
     predictions = np.hstack((boxes, scores[:, np.newaxis], labels[:, np.newaxis]))
