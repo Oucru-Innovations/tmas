@@ -22,7 +22,7 @@ $ pip install tmas
 3. Run the TMAS system:
 
    ```bash
-   python scripts/run_tmas.py
+   python -m scripts.run_tmas
    ```
 
 ## Overview

@@ -66,7 +66,7 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
 
             # Add drug name and concentration text annotations
             ax.text(well_x, well_y - well_radii[row, col] * 0.3, drug, ha='center', va='center', fontsize=10, color='black', alpha=0.8)
-            ax.text(well_x, well_y + well_radii[row, col] * 0.3, f"{conc:.2f}", ha='center', va='center', fontsize=10, color='black', alpha=0.8)
+            ax.text(well_x, well_y + well_radii[row, col] * 0.3, conc, ha='center', va='center', fontsize=10, color='black', alpha=0.8)
 
     # Remove axis ticks and labels
     ax.set_xticks([])
