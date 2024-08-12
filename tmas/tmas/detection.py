@@ -190,13 +190,13 @@ def map_predictions_to_plate_design(image, predictions, padding, ratio, image_si
     well_center, well_radii = c_result
     growth_matrix = [["-none-"] * 12 for _ in range(8)]
 
-    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
+    # fig, ax = plt.subplots(1, 1, figsize=(12, 8))
     # ax.imshow(image)
 
     for row in range(8):
         for col in range(12):
             well_x, well_y = well_center[row, col]
-            ax.plot(well_x, well_y, 'bo')  # Plot well center points
+            # ax.plot(well_x, well_y, 'bo')  # Plot well center points
 
     for box in predictions:
         x1, y1, x2, y2 = box[:4]
@@ -207,7 +207,7 @@ def map_predictions_to_plate_design(image, predictions, padding, ratio, image_si
         cx = (x1 + x2) / 2
         cy = (y1 + y2) / 2
         rect = patches.Rectangle((x1, y1), x2 - x1, y2 - y1, linewidth=2, edgecolor='r', facecolor='none')
-        ax.add_patch(rect)
+        # ax.add_patch(rect)
         for row in range(8):
             for col in range(12):
                 well_x, well_y = well_center[row, col]
