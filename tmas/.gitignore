@@ -159,4 +159,4 @@ dmypy.json
 
 # Ignore model files
 *.pt
-.dy
+.dylib
