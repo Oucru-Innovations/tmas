@@ -24,6 +24,7 @@ Detect bacterial growths and determine MICs on 96-microtiter plate images
    python -m scripts.run_tmas
    ```
 
+If encounting any error in Installing the packages, please refer to the Debugging section.
 ### Installation - Python Package (Upcoming when all features finalised)
 
 ```bash
@@ -38,6 +39,34 @@ $ pip install tmas
 ## Usage
 
 - TODO
+
+## Debugging
+
+If you encounter an error in Step 2 (unable to download any package), you can try creating a new environment and continue with the installation code:
+
+1. Set Up a New Virtual Environment
+   ```bash
+   conda create -n tmas_env python=3.9
+   conda activate tmas_env
+   ```
+
+2. Clone the repository and navigate to the project directory.
+   ```bash
+   git clone https://github.com/Oucru-Innovations/tmas.git
+   cd tmas
+   ```
+3. Install the package using:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+   This may take a while if those packages are not available in the current environment. The internet connection and the hardware capacity also affect the installation speed. 
+
+4. Run TMAS:
+
+   ```bash
+   python -m scripts.run_tmas
+   ```
 
 ## Contributing
 
