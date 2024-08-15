@@ -1,0 +1,15 @@
+Filename,Drug,Results,MIC
+04-00246-701573-1-21-UKMYC5-raw,BDQ,"growth, growth, growth, -none-, growth, -none-, -none-, -none-",0.12
+04-00246-701573-1-21-UKMYC5-raw,KAN,"growth, -none-, -none-, -none-, -none-",2
+04-00246-701573-1-21-UKMYC5-raw,ETH,"growth, growth, growth, growth, growth, growth",>= 8
+04-00246-701573-1-21-UKMYC5-raw,AMI,"growth, -none-, -none-, -none-, -none-, -none-",0.5
+04-00246-701573-1-21-UKMYC5-raw,EMB,"growth, growth, growth, growth, growth, growth, growth, -none-",8
+04-00246-701573-1-21-UKMYC5-raw,INH,"growth, growth, growth, growth, growth, growth, growth",>= 1.6
+04-00246-701573-1-21-UKMYC5-raw,LEV,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.25
+04-00246-701573-1-21-UKMYC5-raw,MXF,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+04-00246-701573-1-21-UKMYC5-raw,DLM,"-none-, -none-, -none-, -none-, -none-, -none-, -none-",<= 0.015
+04-00246-701573-1-21-UKMYC5-raw,LZD,"growth, growth, growth, growth, -none-, -none-, -none-",0.5
+04-00246-701573-1-21-UKMYC5-raw,CFZ,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+04-00246-701573-1-21-UKMYC5-raw,RIF,"growth, growth, growth, growth, growth, growth, growth",>= 4
+04-00246-701573-1-21-UKMYC5-raw,RFB,"growth, growth, growth, growth, growth, growth",>= 2
+04-00246-701573-1-21-UKMYC5-raw,PAS,"growth, -none-, -none-, -none-, -none-, -none-",0.25

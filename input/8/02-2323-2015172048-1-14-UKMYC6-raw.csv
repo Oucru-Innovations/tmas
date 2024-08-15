@@ -1,0 +1,14 @@
+Filename,Drug,Results,MIC
+02-2323-2015172048-1-14-UKMYC6-raw,BDQ,"growth, growth, growth, growth, -none-, growth, -none-, -none-",0.12
+02-2323-2015172048-1-14-UKMYC6-raw,EMB,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-",1
+02-2323-2015172048-1-14-UKMYC6-raw,INH,"-none-, -none-, -none-, -none-, -none-, -none-, -none-, -none-, -none-, -none-",<= 0.025
+02-2323-2015172048-1-14-UKMYC6-raw,RIF,"growth, growth, growth, -none-, -none-, -none-, -none-, -none-, -none-",0.25
+02-2323-2015172048-1-14-UKMYC6-raw,AMI,"-none-, -none-, -none-, -none-, -none-, -none-, -none-",<= 0.25
+02-2323-2015172048-1-14-UKMYC6-raw,LEV,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.25
+02-2323-2015172048-1-14-UKMYC6-raw,MXF,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.25
+02-2323-2015172048-1-14-UKMYC6-raw,DLM,"growth, growth, growth, growth, -none-, -none-, -none-",0.12
+02-2323-2015172048-1-14-UKMYC6-raw,LZD,"growth, growth, growth, -none-, -none-, -none-, -none-",0.5
+02-2323-2015172048-1-14-UKMYC6-raw,CFZ,"growth, -none-, growth, -none-, -none-, -none-, -none-",0.06
+02-2323-2015172048-1-14-UKMYC6-raw,ETH,"growth, -none-, -none-, -none-, -none-, -none-",0.5
+02-2323-2015172048-1-14-UKMYC6-raw,RFB,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.06
+02-2323-2015172048-1-14-UKMYC6-raw,KAN,"growth, -none-, -none-, -none-, -none-",2
