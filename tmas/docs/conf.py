@@ -15,13 +15,23 @@ author = u"RMIT 2OO2 TEAM"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
+import os
+import sys
+source_suffix = ['.rst', '.md']
+sys.path.insert(0, os.path.abspath('../tmas'))
+
 extensions = [
-    "myst_nb",
+    "myst_parser",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",  # For Google-style and NumPy-style docstrings
+    "sphinx.ext.viewcode",  # To link source code
+    "sphinx_autodoc_typehints",
     "autoapi.extension",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
 ]
-autoapi_dirs = ["../src"]
+autoapi_dirs = ["../tmas"]
+autoapi_options = ['members', 'undoc-members']
+
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -34,3 +44,4 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+

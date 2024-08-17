@@ -1,0 +1,23 @@
+tmas.config
+===========
+
+.. py:module:: tmas.config
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: Config
+
+   .. py:attribute:: IMAGE_SIZE
+      :value: (512, 512)
+
+
+
+   .. py:attribute:: MODEL_WEIGHTS_PATH
+      :value: 'models/best_model_yolo.pt'
+
+
+
