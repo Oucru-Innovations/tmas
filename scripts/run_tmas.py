@@ -1,21 +1,8 @@
 import os
 import sys
 from tmas.tmas.input_validation import is_image_file  # Updated import
-from tmas.tmas import preprocess_images, detect_growth, analyze_and_extract_mic
-from tmas.tmas.utils import load_image, load_plate_design
-
-def process_image_file(image_path, format_type, plate_design):
-    """
-    Process a single image file and analyze MIC results.
-    """
-    if not is_image_file(image_path, plate_design):
-        print(f"Skipping non-image file or invalid plate design: {image_path}")
-        return
-
-    image = load_image(image_path)
-    processed_image = preprocess_images(image)
-    detections, inference_time = detect_growth(processed_image)
-    mic_values = analyze_and_extract_mic(image_path, image, detections, plate_design, format_type)
+from tmas.tmas.utils import load_plate_design
+from tmas.tmas.process_image_file import process_image_file
 
 def main():
     if len(sys.argv) < 2 or len(sys.argv) > 3:
@@ -31,7 +18,8 @@ def main():
         if input_format_type in ['csv', 'json']:
             format_type = input_format_type
         else:
-            print("Invalid format type. Choose 'csv' or 'json'. Defaulting to 'csv'.")
+            print("Invalid format type. Choose 'csv' or 'json'.")
+            sys.exit(1)
     
     plate_design = load_plate_design()  # Load or define plate_design here
 
@@ -43,8 +31,6 @@ def main():
                 if is_image_file(file_path, plate_design):
                     print(f"Processing image: {file_path}")
                     process_image_file(file_path, format_type, plate_design)
-                else:
-                    print(f"Skipping non-image file or invalid plate design: {file_path}")
     elif is_image_file(path, plate_design):
         # Process a single image file
         print(f"Processing image: {path}")
