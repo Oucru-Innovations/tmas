@@ -6,6 +6,30 @@ import os
 from .detection import identify_wells
 
 def build_drug_info_dict(plate_info):
+    """
+    Build a dictionary containing drug information based on plate data.
+
+    This function processes the `plate_info` dictionary. It returns a
+    dictionary where each drug is a key, and the corresponding value is another
+    dictionary containing sorted lists of dilutions and concentrations.
+
+
+    :param plate_info: A dictionary containing the following keys:
+        - "drug_matrix":
+        - "dilution_matrix": 
+        - "conc_matrix": 
+    :type plate_info: dict
+
+    :return: A dictionary where each key is a drug name, and the value is another dictionary
+             containing:
+             - "dilutions"
+             - "concentrations"
+    :rtype: dict
+
+    :raises KeyError: If any of the expected keys ("drug_matrix", "dilution_matrix", "conc_matrix")
+                      are missing from `plate_info`.
+    """
+
     drug_info = {}
     drug_matrix = plate_info["drug_matrix"]
     dilution_matrix = plate_info["dilution_matrix"]
@@ -28,6 +52,31 @@ def build_drug_info_dict(plate_info):
     return drug_info
 
 def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_results, plate_info):
+
+    """
+    Visualize the growth matrix on a drug susceptibility testing plate image.
+
+    This function overlays the growth detection information on an image of a microtitre plate,
+    highlighting wells with detected growth, and annotating the wells with the corresponding drug
+    names and concentrations.
+
+    :param image_name: The base name of the image.
+    :type image_name: str
+    :param img: The image of the plate. If the image is in BGR format, it will be converted to RGB.
+    :type img: numpy.ndarray
+    :param growth_matrix: A matrix indicating the growth status of each well.
+    :type growth_matrix: list[list[str]]
+    :param drug_info: A dictionary containing drug information, including dilutions and concentrations.
+    :type drug_info: dict
+    :param drug_results: A dictionary containing the results of the drug susceptibility test, including MIC values.
+    :type drug_results: dict
+    :param plate_info: A dictionary containing plate-specific information, including drug and concentration matrices.
+    :type plate_info: dict
+
+    :return: None
+    :rtype: None
+    """
+
     # Convert the image to RGB if it's not already
     if len(img.shape) == 3 and img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -80,6 +129,30 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
         print(f"{drug}: {result['growth_array']}, MIC: {result['MIC']}")
 
 def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_design_type): # image_name, image, detections, plate_design, plate_design_type
+    
+    """
+    Analyze the growth matrix and determine the Minimum Inhibitory Concentration (MIC) for each drug.
+
+    This function processes the growth matrix of a microtitre plate, compares it with the plate design, 
+    and determines the MIC values for each drug tested. The function also visualizes the results 
+    by overlaying growth detection on the image of the plate.
+
+    :param image_name: The name of the image file used for labeling and saving results.
+    :type image_name: str
+    :param image: The image data of the plate.
+    :type image: numpy.ndarray
+    :param growth_matrix: A matrix indicating the growth status of each well.
+    :type growth_matrix: list[list[str]]
+    :param plate_design: A dictionary containing the design of the plate, including drug and dilution matrices.
+    :type plate_design: dict
+    :param plate_design_type: A string representing the type of plate design being used.
+    :type plate_design_type: str
+
+    :return: A dictionary containing the growth results and MIC values for each drug.
+    :rtype: dict
+
+    """
+
     print(f"Current plate design: {plate_design_type}")
 
     drug_info = build_drug_info_dict(plate_design)
@@ -126,14 +199,59 @@ def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_
     return drug_results
 
 def extract_image_name_from_path(image_path):
-    # Extract the file name from the image path
+    
+    """
+    Extract the image name from a file path.
+
+    This function takes a file path to an image and extracts the base name of the file
+
+    :param image_path: The full file path to the image.
+    :type image_path: str
+
+    :return: The base name of the image file without the extension.
+    :rtype: str
+    """
+
     return os.path.splitext(os.path.basename(image_path))[0]
 
 def extract_plate_design_type_from_image_name(image_name):
-    # Assuming the plate design is always the 6th element in the hyphen-separated image name
+    
+    """
+    Extract the plate design type from an image name.
+
+    Assumes that the plate design type is always the 6th element in a hyphen-separated image name string.
+
+    :param image_name: The image name string, typically in a hyphen-separated format.
+    :type image_name: str
+
+    :return: The plate design type extracted from the image name.
+    :rtype: str
+    """
+
     return image_name.split('-')[5]
 
 def analyze_and_extract_mic(image_path, image, detections, plate_design):
+
+    """
+    Analyze growth matrix and extract Minimum Inhibitory Concentration (MIC) results.
+
+    This function takes an image path, image data, detection results, and a dictionary containing plate designs.
+    It extracts the image name and plate design type from the image path, and then uses these to analyze the
+    growth matrix and determine MIC values.
+
+    :param image_path: The full file path to the image.
+    :type image_path: str
+    :param image: The image data, typically as a numpy array.
+    :type image: numpy.ndarray
+    :param detections: Detection results for the growth matrix.
+    :type detections: Any
+    :param plate_design: A dictionary containing different plate designs indexed by plate design type.
+    :type plate_design: dict
+
+    :return: A dictionary containing drug results, including MIC values.
+    :rtype: dict
+    """
+
     image_name = extract_image_name_from_path(image_path) # 02-1090-2013185209-1-14-UKMYC5-raw
     plate_design_type = extract_plate_design_type_from_image_name(image_name)    
     # Use the plate_design_type string to access the correct dictionary within plate_designs
