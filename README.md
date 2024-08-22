@@ -22,8 +22,12 @@ Detect bacterial growths and determine MICs on 96-microtiter plate images
 3. Run TMAS:
 
    ```bash
-   python -m scripts.run_tmas
+   python -m scripts.run_tmas {folder_path} {output_format}
    ```
+
+- folder_path: the folder contains the image
+- output_format: output MIC of each drug in csv or json file
+- Example: python -m scripts.run_tmas input/3 csv
 
 If encounting any error in Installing the packages, please refer to the Debugging section.
 
@@ -72,9 +76,9 @@ If you encounter an error in Step 2 (unable to download any package), you can tr
    python -m scripts.run_tmas {folder_path} {output_format}
    ```
 
-   folder_path: the folder contains the image
-   output_format: output MIC of each drug in csv or json file
-   Example: python -m scripts.run_tmas input/3 csv
+- folder_path: the folder contains the image
+- output_format: output MIC of each drug in csv or json file
+- Example: python -m scripts.run_tmas input/3 csv
 
 ## Contributing
 
