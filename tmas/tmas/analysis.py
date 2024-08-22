@@ -3,9 +3,13 @@ import matplotlib.patches as patches
 import cv2
 import matplotlib.pyplot as plt
 import os
+import json
+import pandas as pd
+import csv
+from typing import Dict, List, Tuple, Union, Any, Optional
 from .detection import identify_wells
 
-def build_drug_info_dict(plate_info):
+def build_drug_info_dict(plate_info: Dict[str, List[List[Union[str, float]]]]) -> Dict[str, Dict[str, List[Union[str, float]]]]:
     """
     Build a dictionary containing drug information based on plate data.
 
@@ -29,7 +33,6 @@ def build_drug_info_dict(plate_info):
     :raises KeyError: If any of the expected keys ("drug_matrix", "dilution_matrix", "conc_matrix")
                       are missing from `plate_info`.
     """
-
     drug_info = {}
     drug_matrix = plate_info["drug_matrix"]
     dilution_matrix = plate_info["dilution_matrix"]
@@ -51,8 +54,13 @@ def build_drug_info_dict(plate_info):
 
     return drug_info
 
-def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_results, plate_info):
-
+def visualize_growth_matrix(image_name: str,
+                            img: Any,
+                            growth_matrix: List[List[str]],
+                            drug_info: Dict[str, Dict[str, List[Union[str, float]]]],
+                            drug_results: Dict[str, Dict[str, Union[str, List[str]]]],
+                            plate_info:Dict[str, List[List[Union[str, float]]]],
+                            output_directory: str) -> None:
     """
     Visualize the growth matrix on a drug susceptibility testing plate image.
 
@@ -76,14 +84,10 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
     :return: None
     :rtype: None
     """
-
+    
     # Convert the image to RGB if it's not already
     if len(img.shape) == 3 and img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-    # plt.imshow(img)
-    # plt.title("Image Alone")
-    # plt.show()
 
     # Create a figure and axis for plotting
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -120,7 +124,8 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
     plt.axis('off')
 
     # Save the figure to a file with the image name
-    plt.savefig(f"{image_name}_growth_matrix.png", bbox_inches='tight')
+    image_path = os.path.join(output_directory, f"{image_name.replace('-raw', '')}-growth-matrix.png")
+    plt.savefig(image_path, bbox_inches='tight')
     plt.show()
 
     # Print MIC results
@@ -128,8 +133,47 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
     for drug, result in drug_results.items():
         print(f"{drug}: {result['growth_array']}, MIC: {result['MIC']}")
 
-def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_design_type): # image_name, image, detections, plate_design, plate_design_type
+        
+def save_mic_results(data: List[Dict[str, Union[str, float]]],
+                    format_type: str,
+                    filename: str,
+                    output_directory: str) -> None:
+    """
+    Save MIC results in the specified format to the specified directory,
+    appending to existing files if they already exist.
+
+    :param data: List of dictionaries containing drug, results, MIC, and image name.
+    :param format_type: 'csv' or 'json' for the file format.
+    :param filename: Base filename for the output file.
+    :param output_directory: The directory where the results should be saved.
+    """
+    os.makedirs(output_directory, exist_ok=True)  # Create the directory if it does not exist
     
+    full_path = os.path.join(output_directory, filename)
+    
+    try:
+        if format_type == 'csv':
+            # Convert data to DataFrame
+            df = pd.DataFrame(data)
+            df.to_csv(f"{full_path}.csv", index=False, quoting=csv.QUOTE_MINIMAL)
+            print(f"Data saved as {full_path}.csv")
+        
+        elif format_type == 'json':
+            # Prepare data for JSON: use filename as key
+            json_data = {filename: data}
+            # Save data as JSON
+            with open(f"{full_path}.json", 'w') as json_file:
+                json.dump(json_data, json_file, indent=4)
+            print(f"Data saved as {full_path}.json")
+    except Exception as e:
+        print(f"An error occurred while saving the file: {str(e)}")
+
+def analyze_growth_matrix(image_name: str,
+                          image: Any,
+                          growth_matrix: List[List[str]],
+                          plate_design: Dict[str, List[List[Union[str, float]]]],
+                          plate_design_type: str,
+                          output_directory: str) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]: 
     """
     Analyze the growth matrix and determine the Minimum Inhibitory Concentration (MIC) for each drug.
 
@@ -152,7 +196,6 @@ def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_
     :rtype: dict
 
     """
-
     print(f"Current plate design: {plate_design_type}")
 
     drug_info = build_drug_info_dict(plate_design)
@@ -195,11 +238,10 @@ def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_
 
         drug_results[drug] = {"growth_array": growth_array, "MIC": mic}
 
-    visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design)
+    visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design, output_directory)
     return drug_results
 
-def extract_image_name_from_path(image_path):
-    
+def extract_image_name_from_path(image_path: str) -> str:
     """
     Extract the image name from a file path.
 
@@ -211,11 +253,10 @@ def extract_image_name_from_path(image_path):
     :return: The base name of the image file without the extension.
     :rtype: str
     """
-
+    # Extract the file name from the image path
     return os.path.splitext(os.path.basename(image_path))[0]
 
-def extract_plate_design_type_from_image_name(image_name):
-    
+def extract_plate_design_type_from_image_name(image_name: str) -> str:
     """
     Extract the plate design type from an image name.
 
@@ -227,11 +268,14 @@ def extract_plate_design_type_from_image_name(image_name):
     :return: The plate design type extracted from the image name.
     :rtype: str
     """
-
+    # Assuming the plate design is always the 6th element in the hyphen-separated image name
     return image_name.split('-')[5]
 
-def analyze_and_extract_mic(image_path, image, detections, plate_design):
-
+def analyze_and_extract_mic(image_path: str,
+                            image: Any,
+                            detections: List[List[str]],
+                            plate_design: Dict[str, Dict[str, List[List[Union[str, float]]]]],
+                            format_type: str) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]:
     """
     Analyze growth matrix and extract Minimum Inhibitory Concentration (MIC) results.
 
@@ -251,10 +295,32 @@ def analyze_and_extract_mic(image_path, image, detections, plate_design):
     :return: A dictionary containing drug results, including MIC values.
     :rtype: dict
     """
-
-    image_name = extract_image_name_from_path(image_path) # 02-1090-2013185209-1-14-UKMYC5-raw
-    plate_design_type = extract_plate_design_type_from_image_name(image_name)    
+    image_name = extract_image_name_from_path(image_path)
+    plate_design_type = extract_plate_design_type_from_image_name(image_name)
+    
+    # Get the directory where the image is located
+    output_directory = os.path.dirname(image_path)
+    
     # Use the plate_design_type string to access the correct dictionary within plate_designs
-    drug_results = analyze_growth_matrix(image_name, image, detections, plate_design[plate_design_type], plate_design_type)
+    drug_results = analyze_growth_matrix(image_name, image, detections, plate_design[plate_design_type], plate_design_type, output_directory)
+    
+    # Prepare data for saving
+    # Format data as a list of dictionaries
+    
+    # Save MIC results
+    filename = image_name  # Use image name as the filename
+    if format_type == 'csv':
+        # Add the format type to the data if saving as CSV
+        data_with_format = [
+            {"Filename": filename, "Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": result["MIC"]}
+            for drug, result in drug_results.items()
+        ]
+        save_mic_results(data_with_format, format_type, filename, output_directory)
+    else:
+        data = [
+        {"Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": result["MIC"]}
+        for drug, result in drug_results.items()
+        ]
+        save_mic_results(data, format_type, filename, output_directory)
 
     return drug_results

@@ -8,10 +8,13 @@ from torchvision import transforms
 import cv2
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from typing import Tuple, List, Union, Any, Optional
 
 # Function to resize and pad image to 512x512 with white padding
-def resize_with_padding(image, target_size=(512, 512), padding_color=(255, 255, 255)):
-
+def resize_with_padding(image: np.ndarray, 
+                        target_size: Tuple[int, int] = (512, 512), 
+                        padding_color: Tuple[int, int, int] = (255, 255, 255)
+                       ) -> Tuple[Image.Image, Tuple[int, int], float]:
     """
     Resize an image while maintaining its aspect ratio, 
 
@@ -108,8 +111,12 @@ def resize_with_padding(image, target_size=(512, 512), padding_color=(255, 255, 
 #     return False
 
 # Function to identify wells in the plate -
-def identify_wells(image, hough_param1=20, hough_param2=25, radius_tolerance=0.015, verbose=False):
-
+def identify_wells(image: np.ndarray, 
+                   hough_param1: int = 20, 
+                   hough_param2: int = 25, 
+                   radius_tolerance: float = 0.015, 
+                   verbose: bool = False
+                  ) -> Union[Tuple[np.ndarray, np.ndarray], bool]:
     """
     Identify the wells on a microtitre plate image.
 
@@ -140,7 +147,6 @@ def identify_wells(image, hough_param1=20, hough_param2=25, radius_tolerance=0.0
     :raises ValueError: If the image is not in a valid format (grayscale or RGB) or if the image is empty
                         after processing.
     """
-
 
     well_dimensions = (8, 12)
     well_index = np.zeros(well_dimensions, dtype=int)
@@ -237,8 +243,12 @@ def identify_wells(image, hough_param1=20, hough_param2=25, radius_tolerance=0.0
     else:
         return False
 
-def map_predictions_to_plate_design(image, predictions, padding, ratio, image_size=512):
-
+def map_predictions_to_plate_design(image: np.ndarray, 
+                                    predictions: np.ndarray, 
+                                    padding: Tuple[int, int], 
+                                    ratio: float, 
+                                    image_size: int = 512
+                                   ) -> List[List[str]]:
     """
     Map object detection predictions to the corresponding wells in a microtitre plate design.
 
@@ -303,7 +313,11 @@ def map_predictions_to_plate_design(image, predictions, padding, ratio, image_si
 
     return growth_matrix
 
-def post_process_detections(image, predictions, padding, ratio):
+def post_process_detections(image: np.ndarray, 
+                            predictions: np.ndarray, 
+                            padding: Tuple[int, int], 
+                            ratio: float
+                           ) -> List[List[str]]:
     """
     Post-process the detection predictions and map them to the plate design.
 
@@ -328,7 +342,7 @@ def post_process_detections(image, predictions, padding, ratio):
     growth_matrix = map_predictions_to_plate_design(image, predictions, padding, ratio)
     return growth_matrix
 
-def detect_growth(image): 
+def detect_growth(image: np.ndarray) -> Tuple[List[List[str]], float]:
 
     """
     Detect bacterial growth on a plate image using object detection model.
@@ -346,7 +360,7 @@ def detect_growth(image):
     :rtype: list[list[str]], float
 
     """
-
+    
     print("Detecting growth...")
     model = YOLOv8()
 
