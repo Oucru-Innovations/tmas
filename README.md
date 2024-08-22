@@ -16,7 +16,8 @@ Detect bacterial growths and determine MICs on 96-microtiter plate images
    ```bash
    pip install -r requirements.txt
    ```
-   This may take a while if those packages are not available in the current environment. The internet connection and the hardware capacity also affect the installation speed. 
+
+   This may take a while if those packages are not available in the current environment. The internet connection and the hardware capacity also affect the installation speed.
 
 3. Run TMAS:
 
@@ -25,6 +26,7 @@ Detect bacterial growths and determine MICs on 96-microtiter plate images
    ```
 
 If encounting any error in Installing the packages, please refer to the Debugging section.
+
 ### Installation - Python Package (Upcoming when all features finalised)
 
 ```bash
@@ -34,7 +36,7 @@ $ pip install tmas
 ## Overview
 
 - The package uses deep learning to detect _M. tuberculosis_ growth in 96-well microtiter plates and determines Minimum Inhibitory Concentrations (MICs).
-- The model weights (`best_model_yolo.pt`) is downloaded automatically and separately to avoid including large files directly in the package. It is downloaded only once. 
+- The model weights (`best_model_yolo.pt`) is downloaded automatically and separately to avoid including large files directly in the package. It is downloaded only once.
 
 ## Usage
 
@@ -45,6 +47,7 @@ $ pip install tmas
 If you encounter an error in Step 2 (unable to download any package), you can try creating a new environment and continue with the installation code:
 
 1. Set Up a New Virtual Environment
+
    ```bash
    conda create -n tmas_env python=3.9
    conda activate tmas_env
@@ -60,13 +63,18 @@ If you encounter an error in Step 2 (unable to download any package), you can tr
    ```bash
    pip install -r requirements.txt
    ```
-   This may take a while if those packages are not available in the current environment. The internet connection and the hardware capacity also affect the installation speed. 
+
+   This may take a while if those packages are not available in the current environment. The internet connection and the hardware capacity also affect the installation speed.
 
 4. Run TMAS:
 
    ```bash
-   python -m scripts.run_tmas
+   python -m scripts.run_tmas {folder_path} {output_format}
    ```
+
+   folder_path: the folder contains the image
+   output_format: output MIC of each drug in csv or json file
+   Example: python -m scripts.run_tmas input/3 csv
 
 ## Contributing
 
