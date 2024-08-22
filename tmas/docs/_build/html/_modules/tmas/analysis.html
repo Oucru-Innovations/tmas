@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tmas.analysis &mdash; tmas  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            tmas
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tmas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tmas.analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tmas.analysis</h1><div class="highlight"><pre>
+<span></span><span class="c1"># tmas/analysis.py</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.detection</span> <span class="kn">import</span> <span class="n">identify_wells</span>
+
+<div class="viewcode-block" id="build_drug_info_dict">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.build_drug_info_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">build_drug_info_dict</span><span class="p">(</span><span class="n">plate_info</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a dictionary containing drug information based on plate data.</span>
+
+<span class="sd">    This function processes the `plate_info` dictionary. It returns a</span>
+<span class="sd">    dictionary where each drug is a key, and the corresponding value is another</span>
+<span class="sd">    dictionary containing sorted lists of dilutions and concentrations.</span>
+
+
+<span class="sd">    :param plate_info: A dictionary containing the following keys:</span>
+<span class="sd">        - &quot;drug_matrix&quot;:</span>
+<span class="sd">        - &quot;dilution_matrix&quot;: </span>
+<span class="sd">        - &quot;conc_matrix&quot;: </span>
+<span class="sd">    :type plate_info: dict</span>
+
+<span class="sd">    :return: A dictionary where each key is a drug name, and the value is another dictionary</span>
+<span class="sd">             containing:</span>
+<span class="sd">             - &quot;dilutions&quot;</span>
+<span class="sd">             - &quot;concentrations&quot;</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :raises KeyError: If any of the expected keys (&quot;drug_matrix&quot;, &quot;dilution_matrix&quot;, &quot;conc_matrix&quot;)</span>
+<span class="sd">                      are missing from `plate_info`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">drug_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">drug_matrix</span> <span class="o">=</span> <span class="n">plate_info</span><span class="p">[</span><span class="s2">&quot;drug_matrix&quot;</span><span class="p">]</span>
+    <span class="n">dilution_matrix</span> <span class="o">=</span> <span class="n">plate_info</span><span class="p">[</span><span class="s2">&quot;dilution_matrix&quot;</span><span class="p">]</span>
+    <span class="n">conc_matrix</span> <span class="o">=</span> <span class="n">plate_info</span><span class="p">[</span><span class="s2">&quot;conc_matrix&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="n">drug</span> <span class="o">=</span> <span class="n">drug_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">drug</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">drug_info</span><span class="p">:</span>
+                <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;dilutions&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;concentrations&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;dilutions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dilution_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">])</span>
+            <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;concentrations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conc_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">])</span>
+
+    <span class="c1"># Sort the dilutions and concentrations for each drug</span>
+    <span class="k">for</span> <span class="n">drug</span> <span class="ow">in</span> <span class="n">drug_info</span><span class="p">:</span>
+        <span class="n">combined</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;dilutions&quot;</span><span class="p">],</span> <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;concentrations&quot;</span><span class="p">]))</span>
+        <span class="n">combined</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># Sort by dilution</span>
+        <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;dilutions&quot;</span><span class="p">],</span> <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;concentrations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">combined</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">drug_info</span></div>
+
+
+<div class="viewcode-block" id="visualize_growth_matrix">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.visualize_growth_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">visualize_growth_matrix</span><span class="p">(</span><span class="n">image_name</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">growth_matrix</span><span class="p">,</span> <span class="n">drug_info</span><span class="p">,</span> <span class="n">drug_results</span><span class="p">,</span> <span class="n">plate_info</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualize the growth matrix on a drug susceptibility testing plate image.</span>
+
+<span class="sd">    This function overlays the growth detection information on an image of a microtitre plate,</span>
+<span class="sd">    highlighting wells with detected growth, and annotating the wells with the corresponding drug</span>
+<span class="sd">    names and concentrations.</span>
+
+<span class="sd">    :param image_name: The base name of the image.</span>
+<span class="sd">    :type image_name: str</span>
+<span class="sd">    :param img: The image of the plate. If the image is in BGR format, it will be converted to RGB.</span>
+<span class="sd">    :type img: numpy.ndarray</span>
+<span class="sd">    :param growth_matrix: A matrix indicating the growth status of each well.</span>
+<span class="sd">    :type growth_matrix: list[list[str]]</span>
+<span class="sd">    :param drug_info: A dictionary containing drug information, including dilutions and concentrations.</span>
+<span class="sd">    :type drug_info: dict</span>
+<span class="sd">    :param drug_results: A dictionary containing the results of the drug susceptibility test, including MIC values.</span>
+<span class="sd">    :type drug_results: dict</span>
+<span class="sd">    :param plate_info: A dictionary containing plate-specific information, including drug and concentration matrices.</span>
+<span class="sd">    :type plate_info: dict</span>
+
+<span class="sd">    :return: None</span>
+<span class="sd">    :rtype: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Convert the image to RGB if it&#39;s not already</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+
+    <span class="c1"># plt.imshow(img)</span>
+    <span class="c1"># plt.title(&quot;Image Alone&quot;)</span>
+    <span class="c1"># plt.show()</span>
+
+    <span class="c1"># Create a figure and axis for plotting</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="c1"># Identify wells on the plate</span>
+    <span class="n">well_center</span><span class="p">,</span> <span class="n">well_radii</span> <span class="o">=</span> <span class="n">identify_wells</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">hough_param1</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">hough_param2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">radius_tolerance</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Extract drug and concentration matrices from plate information</span>
+    <span class="n">drug_matrix</span> <span class="o">=</span> <span class="n">plate_info</span><span class="p">[</span><span class="s2">&quot;drug_matrix&quot;</span><span class="p">]</span>
+    <span class="n">conc_matrix</span> <span class="o">=</span> <span class="n">plate_info</span><span class="p">[</span><span class="s2">&quot;conc_matrix&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Iterate over each well to visualize growth and drug information</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="n">drug</span> <span class="o">=</span> <span class="n">drug_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">conc</span> <span class="o">=</span> <span class="n">conc_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">growth</span> <span class="o">=</span> <span class="n">growth_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+
+            <span class="n">well_x</span><span class="p">,</span> <span class="n">well_y</span> <span class="o">=</span> <span class="n">well_center</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">growth</span> <span class="o">==</span> <span class="s1">&#39;growth&#39;</span><span class="p">:</span>
+                <span class="c1"># Draw a green circle to indicate growth</span>
+                <span class="n">circle</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">well_x</span><span class="p">,</span> <span class="n">well_y</span><span class="p">),</span> <span class="n">well_radii</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+            <span class="c1"># Add drug name and concentration text annotations</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">well_x</span><span class="p">,</span> <span class="n">well_y</span> <span class="o">-</span> <span class="n">well_radii</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">drug</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">well_x</span><span class="p">,</span> <span class="n">well_y</span> <span class="o">+</span> <span class="n">well_radii</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">conc</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+
+    <span class="c1"># Remove axis ticks and labels</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Growth Detection Matrix for </span><span class="si">{</span><span class="n">image_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Save the figure to a file with the image name</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">image_name</span><span class="si">}</span><span class="s2">_growth_matrix.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Print MIC results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MIC Results for </span><span class="si">{</span><span class="n">image_name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">drug</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">drug_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">drug</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;growth_array&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, MIC: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;MIC&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="analyze_growth_matrix">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.analyze_growth_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">analyze_growth_matrix</span><span class="p">(</span><span class="n">image_name</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">growth_matrix</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">,</span> <span class="n">plate_design_type</span><span class="p">):</span> <span class="c1"># image_name, image, detections, plate_design, plate_design_type</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze the growth matrix and determine the Minimum Inhibitory Concentration (MIC) for each drug.</span>
+
+<span class="sd">    This function processes the growth matrix of a microtitre plate, compares it with the plate design, </span>
+<span class="sd">    and determines the MIC values for each drug tested. The function also visualizes the results </span>
+<span class="sd">    by overlaying growth detection on the image of the plate.</span>
+
+<span class="sd">    :param image_name: The name of the image file used for labeling and saving results.</span>
+<span class="sd">    :type image_name: str</span>
+<span class="sd">    :param image: The image data of the plate.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+<span class="sd">    :param growth_matrix: A matrix indicating the growth status of each well.</span>
+<span class="sd">    :type growth_matrix: list[list[str]]</span>
+<span class="sd">    :param plate_design: A dictionary containing the design of the plate, including drug and dilution matrices.</span>
+<span class="sd">    :type plate_design: dict</span>
+<span class="sd">    :param plate_design_type: A string representing the type of plate design being used.</span>
+<span class="sd">    :type plate_design_type: str</span>
+
+<span class="sd">    :return: A dictionary containing the growth results and MIC values for each drug.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current plate design: </span><span class="si">{</span><span class="n">plate_design_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">drug_info</span> <span class="o">=</span> <span class="n">build_drug_info_dict</span><span class="p">(</span><span class="n">plate_design</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">growth_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;growth&#39;</span> <span class="ow">and</span> <span class="n">growth_matrix</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">11</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;growth&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Positive Control Wells - Invalid&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">drug_growth</span> <span class="o">=</span> <span class="p">{</span><span class="n">drug</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-none-&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;dilutions&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">drug</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">drug_info</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">drug</span> <span class="o">!=</span> <span class="s2">&quot;POS&quot;</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="n">drug</span> <span class="o">=</span> <span class="n">plate_design</span><span class="p">[</span><span class="s2">&quot;drug_matrix&quot;</span><span class="p">][</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">drug</span> <span class="o">==</span> <span class="s2">&quot;POS&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># Skip POS wells</span>
+            <span class="n">dilution</span> <span class="o">=</span> <span class="n">plate_design</span><span class="p">[</span><span class="s2">&quot;dilution_matrix&quot;</span><span class="p">][</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s2">&quot;dilutions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dilution</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">growth_matrix</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;growth&#39;</span><span class="p">:</span>
+                <span class="n">drug_growth</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;growth&#39;</span>
+
+    <span class="n">num_drugs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">drug_growth</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of drugs (excluding POS): </span><span class="si">{</span><span class="n">num_drugs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">drug_results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">drug</span><span class="p">,</span> <span class="n">growth_array</span> <span class="ow">in</span> <span class="n">drug_growth</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">all_growth</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;growth&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">growth_array</span><span class="p">)</span>
+        <span class="n">all_none</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;-none-&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">growth_array</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">all_growth</span><span class="p">:</span>
+            <span class="n">mic</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&gt;= </span><span class="si">{</span><span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s1">&#39;concentrations&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># MIC is greater than or equal to the highest concentration</span>
+        <span class="k">elif</span> <span class="n">all_none</span><span class="p">:</span>
+            <span class="n">mic</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;= </span><span class="si">{</span><span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s1">&#39;concentrations&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># MIC is less than or equal to the lowest concentration</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">growth_array</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">growth_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-none-&#39;</span><span class="p">:</span>
+                    <span class="n">mic</span> <span class="o">=</span> <span class="n">drug_info</span><span class="p">[</span><span class="n">drug</span><span class="p">][</span><span class="s1">&#39;concentrations&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mic</span> <span class="o">=</span> <span class="s2">&quot;Invalid&quot;</span>
+
+        <span class="n">drug_results</span><span class="p">[</span><span class="n">drug</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;growth_array&quot;</span><span class="p">:</span> <span class="n">growth_array</span><span class="p">,</span> <span class="s2">&quot;MIC&quot;</span><span class="p">:</span> <span class="n">mic</span><span class="p">}</span>
+
+    <span class="n">visualize_growth_matrix</span><span class="p">(</span><span class="n">image_name</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">growth_matrix</span><span class="p">,</span> <span class="n">drug_info</span><span class="p">,</span> <span class="n">drug_results</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">drug_results</span></div>
+
+
+<div class="viewcode-block" id="extract_image_name_from_path">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.extract_image_name_from_path">[docs]</a>
+<span class="k">def</span> <span class="nf">extract_image_name_from_path</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the image name from a file path.</span>
+
+<span class="sd">    This function takes a file path to an image and extracts the base name of the file</span>
+
+<span class="sd">    :param image_path: The full file path to the image.</span>
+<span class="sd">    :type image_path: str</span>
+
+<span class="sd">    :return: The base name of the image file without the extension.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="extract_plate_design_type_from_image_name">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.extract_plate_design_type_from_image_name">[docs]</a>
+<span class="k">def</span> <span class="nf">extract_plate_design_type_from_image_name</span><span class="p">(</span><span class="n">image_name</span><span class="p">):</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the plate design type from an image name.</span>
+
+<span class="sd">    Assumes that the plate design type is always the 6th element in a hyphen-separated image name string.</span>
+
+<span class="sd">    :param image_name: The image name string, typically in a hyphen-separated format.</span>
+<span class="sd">    :type image_name: str</span>
+
+<span class="sd">    :return: The plate design type extracted from the image name.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">image_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="analyze_and_extract_mic">
+<a class="viewcode-back" href="../../autoapi/tmas/analysis/index.html#tmas.analysis.analyze_and_extract_mic">[docs]</a>
+<span class="k">def</span> <span class="nf">analyze_and_extract_mic</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">detections</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze growth matrix and extract Minimum Inhibitory Concentration (MIC) results.</span>
+
+<span class="sd">    This function takes an image path, image data, detection results, and a dictionary containing plate designs.</span>
+<span class="sd">    It extracts the image name and plate design type from the image path, and then uses these to analyze the</span>
+<span class="sd">    growth matrix and determine MIC values.</span>
+
+<span class="sd">    :param image_path: The full file path to the image.</span>
+<span class="sd">    :type image_path: str</span>
+<span class="sd">    :param image: The image data, typically as a numpy array.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+<span class="sd">    :param detections: Detection results for the growth matrix.</span>
+<span class="sd">    :type detections: Any</span>
+<span class="sd">    :param plate_design: A dictionary containing different plate designs indexed by plate design type.</span>
+<span class="sd">    :type plate_design: dict</span>
+
+<span class="sd">    :return: A dictionary containing drug results, including MIC values.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">image_name</span> <span class="o">=</span> <span class="n">extract_image_name_from_path</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span> <span class="c1"># 02-1090-2013185209-1-14-UKMYC5-raw</span>
+    <span class="n">plate_design_type</span> <span class="o">=</span> <span class="n">extract_plate_design_type_from_image_name</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>    
+    <span class="c1"># Use the plate_design_type string to access the correct dictionary within plate_designs</span>
+    <span class="n">drug_results</span> <span class="o">=</span> <span class="n">analyze_growth_matrix</span><span class="p">(</span><span class="n">image_name</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">detections</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">[</span><span class="n">plate_design_type</span><span class="p">],</span> <span class="n">plate_design_type</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">drug_results</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, RMIT 2OO2 TEAM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

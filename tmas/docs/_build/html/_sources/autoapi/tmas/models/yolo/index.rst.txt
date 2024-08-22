@@ -1,0 +1,25 @@
+tmas.models.yolo
+================
+
+.. py:module:: tmas.models.yolo
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: get_confirm_token(response)
+
+.. py:function:: download_model()
+
+.. py:class:: YOLOv8(weights='tmas/tmas/models/best_model_yolo.pt')
+
+   .. py:attribute:: model
+
+
+   .. py:method:: predict(img)
+
+
