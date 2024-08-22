@@ -6,9 +6,10 @@ import os
 import json
 import pandas as pd
 import csv
+from typing import Dict, List, Tuple, Union, Any, Optional
 from .detection import identify_wells
 
-def build_drug_info_dict(plate_info):
+def build_drug_info_dict(plate_info: Dict[str, List[List[Union[str, float]]]]) -> Dict[str, Dict[str, List[Union[str, float]]]]:
     drug_info = {}
     drug_matrix = plate_info["drug_matrix"]
     dilution_matrix = plate_info["dilution_matrix"]
@@ -30,7 +31,13 @@ def build_drug_info_dict(plate_info):
 
     return drug_info
 
-def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_results, plate_info, output_directory):
+def visualize_growth_matrix(image_name: str,
+                            img: Any,
+                            growth_matrix: List[List[str]],
+                            drug_info: Dict[str, Dict[str, List[Union[str, float]]]],
+                            drug_results: Dict[str, Dict[str, Union[str, List[str]]]],
+                            plate_info:Dict[str, List[List[Union[str, float]]]],
+                            output_directory: str) -> None:
     # Convert the image to RGB if it's not already
     if len(img.shape) == 3 and img.shape[2] == 3:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -80,7 +87,10 @@ def visualize_growth_matrix(image_name, img, growth_matrix, drug_info, drug_resu
         print(f"{drug}: {result['growth_array']}, MIC: {result['MIC']}")
 
         
-def save_mic_results(data, format_type, filename, output_directory):
+def save_mic_results(data: List[Dict[str, Union[str, float]]],
+                    format_type: str,
+                    filename: str,
+                    output_directory: str) -> None:
     """
     Save MIC results in the specified format to the specified directory,
     appending to existing files if they already exist.
@@ -111,7 +121,12 @@ def save_mic_results(data, format_type, filename, output_directory):
     except Exception as e:
         print(f"An error occurred while saving the file: {str(e)}")
 
-def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_design_type, output_directory): 
+def analyze_growth_matrix(image_name: str,
+                          image: Any,
+                          growth_matrix: List[List[str]],
+                          plate_design: Dict[str, List[List[Union[str, float]]]],
+                          plate_design_type: str,
+                          output_directory: str) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]: 
     print(f"Current plate design: {plate_design_type}")
 
     drug_info = build_drug_info_dict(plate_design)
@@ -157,15 +172,19 @@ def analyze_growth_matrix(image_name, image, growth_matrix, plate_design, plate_
     visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design, output_directory)
     return drug_results
 
-def extract_image_name_from_path(image_path):
+def extract_image_name_from_path(image_path: str) -> str:
     # Extract the file name from the image path
     return os.path.splitext(os.path.basename(image_path))[0]
 
-def extract_plate_design_type_from_image_name(image_name):
+def extract_plate_design_type_from_image_name(image_name: str) -> str:
     # Assuming the plate design is always the 6th element in the hyphen-separated image name
     return image_name.split('-')[5]
 
-def analyze_and_extract_mic(image_path, image, detections, plate_design, format_type):
+def analyze_and_extract_mic(image_path: str,
+                            image: Any,
+                            detections: List[List[str]],
+                            plate_design: Dict[str, Dict[str, List[List[Union[str, float]]]]],
+                            format_type: str) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]:
     image_name = extract_image_name_from_path(image_path)  # Example: 02-1090-2013185209-1-14-UKMYC5-raw
     plate_design_type = extract_plate_design_type_from_image_name(image_name)
     
