@@ -6,7 +6,7 @@ from tmas.tmas.utils import load_image, load_plate_design
 
 def main():
     # Load image
-    image_path = "data/sample_data/01-DR0013-DR0013-1-14-UKMYC6-raw.png"
+    image_path = "data/sample_data/01-DR0053-DR0053-1-14-UKMYC6-raw.png"
     image = load_image(image_path)
     
     # Preprocess image
