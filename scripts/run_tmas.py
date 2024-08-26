@@ -21,6 +21,9 @@ def main():
             print("Invalid format type. Choose 'csv' or 'json'.")
             sys.exit(1)
     
+    cwd = os.getcwd()
+    print("Current working directory:", cwd)
+
     plate_design = load_plate_design()  # Load or define plate_design here
 
     if os.path.isdir(path):
@@ -28,6 +31,7 @@ def main():
         for root, dirs, files in os.walk(path):
             for file_name in files:
                 file_path = os.path.join(root, file_name)
+                print(file_path)
                 if is_image_file(file_path, plate_design):
                     print(f"Processing image: {file_path}")
                     process_image_file(file_path, format_type, plate_design)
