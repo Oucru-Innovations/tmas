@@ -1,8 +1,8 @@
 import os
 import sys
-from tmas.tmas.input_validation import is_image_file  # Updated import
-from tmas.tmas.utils import load_plate_design
-from tmas.tmas.process_image_file import process_image_file
+from tmas.src.input_validation import is_image_file  # Updated import
+from tmas.src.utils import load_plate_design
+from tmas.src.process_image_file import process_image_file
 
 def main():
     if len(sys.argv) < 2 or len(sys.argv) > 3:

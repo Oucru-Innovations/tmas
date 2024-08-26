@@ -147,10 +147,11 @@ def save_mic_results(data: List[Dict[str, Union[str, float]]],
     :param filename: Base filename for the output file.
     :param output_directory: The directory where the results should be saved.
     """
-    os.makedirs(output_directory, exist_ok=True)  # Create the directory if it does not exist
     
-    full_path = os.path.join(output_directory, filename)
-    
+    final_output_directory = os.path.join(output_directory, "output")
+    os.makedirs(final_output_directory, exist_ok=True)  # Create the directory if it does not exist
+    full_path = os.path.join(final_output_directory, filename)  # Update full path to include the new subdirectory
+
     try:
         if format_type == 'csv':
             # Convert data to DataFrame
