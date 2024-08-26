@@ -124,7 +124,9 @@ def visualize_growth_matrix(image_name: str,
     plt.axis('off')
 
     # Save the figure to a file with the image name
-    image_path = os.path.join(output_directory, f"{image_name.replace('-raw', '')}-growth-matrix.png")
+    final_output_directory = os.path.join(output_directory, "output")
+    os.makedirs(final_output_directory, exist_ok=True)  # Create the directory if it does not exist
+    image_path = os.path.join(final_output_directory, f"{image_name.replace('-raw', '')}-growth-matrix-visualization.png")
     plt.savefig(image_path, bbox_inches='tight')
     plt.show()
 
