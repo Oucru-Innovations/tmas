@@ -27,7 +27,7 @@ Detect bacterial growths and determine MICs on 96-microtiter plate images
 
 - folder_path: the folder contains the image
 - output_format: output MIC of each drug in csv or json file
-- Example: python -m scripts.run_tmas input/3 csv
+- Example: python -m scripts.run_tmas data/1 csv
 
 If encounting any error in Installing the packages, please refer to the Debugging section.
 
@@ -78,7 +78,7 @@ If you encounter an error in Step 2 (unable to download any package), you can tr
 
 - folder_path: the folder contains the image
 - output_format: output MIC of each drug in csv or json file
-- Example: python -m scripts.run_tmas input/3 csv
+- Example: python -m scripts.run_tmas data/1 csv
 
 ## Contributing
 

@@ -11,8 +11,11 @@ def load_plate_design() -> Dict[str, Any]:
     :return: A dictionary containing the plate design configuration.
     """
     config_path = os.path.join(os.path.dirname(__file__), '../../config/plate-design.json')
+    print("Looking for plate-design.json at:", config_path)
+
     with open(config_path, 'r') as file:
         plate_design = json.load(file)
+        print("Successfully loaded file.")
     return plate_design
 
 def load_image(image_path: str) -> np.ndarray:
