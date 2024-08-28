@@ -133,7 +133,7 @@ def visualize_growth_matrix(image_name: str,
     # Print MIC results
     print(f"MIC Results for {image_name}:")
     for drug, result in drug_results.items():
-        print(f"{drug}: {result['growth_array']}, MIC: {result['MIC']}")
+        print(f"{drug}: {result['growth_array']}, MIC: {'N/A' if result['skip_well'] else result['MIC']}, Abnormal Growth: {'Require manual check' if result['skip_well'] else 'No'}")
 
         
 def save_mic_results(data: List[Dict[str, Union[str, float]]],
@@ -227,11 +227,25 @@ def analyze_growth_matrix(image_name: str,
         all_growth = all(x == 'growth' for x in growth_array)
         all_none = all(x == '-none-' for x in growth_array)
 
+        # Initialize skip_well variable to False by default
+        skip_well = False
+
+        # Determine MIC if all wells show growth
         if all_growth:
             mic = f">= {drug_info[drug]['concentrations'][-1]}"  # MIC is greater than or equal to the highest concentration
+
+        # Determine MIC if no wells show growth
         elif all_none:
             mic = f"<= {drug_info[drug]['concentrations'][0]}"  # MIC is less than or equal to the lowest concentration
+
         else:
+            # Check for skip wells (discontinuities in growth pattern)
+            for i in range(1, len(growth_array)):
+                if growth_array[i] == 'growth' and growth_array[i - 1] == '-none-':
+                    skip_well = True  # Set skip_well to True
+                    break  # Exit loop since a skip well is detected
+
+            # Determine MIC for partial growth cases
             for i in range(len(growth_array)):
                 if growth_array[i] == '-none-':
                     mic = drug_info[drug]['concentrations'][i]
@@ -239,7 +253,12 @@ def analyze_growth_matrix(image_name: str,
             else:
                 mic = "Invalid"
 
-        drug_results[drug] = {"growth_array": growth_array, "MIC": mic}
+        # Store the growth array, MIC, and skip_well for the current drug
+        drug_results[drug] = {
+            "growth_array": growth_array,
+            "MIC": mic,
+            "skip_well": skip_well  # Add skip_well to the results
+        }
 
     visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design, output_directory)
     return drug_results
@@ -315,13 +334,13 @@ def analyze_and_extract_mic(image_path: str,
     if format_type == 'csv':
         # Add the format type to the data if saving as CSV
         data_with_format = [
-            {"Filename": filename, "Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": result["MIC"]}
+            {"Filename": filename, "Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": "N/A" if result["skip_well"] else result["MIC"], "Skip Well": result["skip_well"]}
             for drug, result in drug_results.items()
         ]
         save_mic_results(data_with_format, format_type, filename, output_directory)
     else:
         data = [
-        {"Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": result["MIC"]}
+        {"Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": "N/A" if result["skip_well"] else result["MIC"], "Abnormal Growth": result["skip_well"]}
         for drug, result in drug_results.items()
         ]
         save_mic_results(data, format_type, filename, output_directory)
