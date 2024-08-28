@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import stats
 from typing import Tuple
+import os
 
 def convert_image_to_colour(image: np.ndarray) -> np.ndarray:
     """
@@ -135,7 +136,7 @@ def stretch_histogram(image: np.ndarray) -> np.ndarray:
     return image
 
 # Function to preprocess images with a series of filters
-def preprocess_images(image: np.ndarray) -> np.ndarray:
+def preprocess_images(image: np.ndarray, image_path: str) -> np.ndarray:
     """
     Preprocess an image by applying a series of filtering and histogram adjustment techniques.
 
@@ -143,6 +144,8 @@ def preprocess_images(image: np.ndarray) -> np.ndarray:
 
     :param image: The input image, which can be either grayscale or color.
     :type image: numpy.ndarray
+    :param image_path: The path to the image file, used to generate a path for saving the processed image.
+    :type image_path: str
 
     :return: The image after applying preprocessing steps
     :rtype: numpy.ndarray
@@ -150,5 +153,12 @@ def preprocess_images(image: np.ndarray) -> np.ndarray:
     processed_image = mean_shift_filter(image)
     processed_image = equalise_histograms_locally(processed_image)
     processed_image = stretch_histogram(processed_image)
-
+    final_output_directory = os.path.join(os.path.dirname(image_path), "output")
+    os.makedirs(final_output_directory, exist_ok=True)
+    filename = os.path.basename(image_path)
+    full_path = os.path.join(final_output_directory, filename.replace('-raw', '-filtered'))
+    # Save the processed image using OpenCV
+    cv2.imwrite(full_path, processed_image)
+    print(f"Save filtered image as {full_path}")
     return processed_image
+

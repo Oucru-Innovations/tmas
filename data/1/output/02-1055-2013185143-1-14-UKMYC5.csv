@@ -1,0 +1,15 @@
+Filename,Drug,Results,MIC
+02-1055-2013185143-1-14-UKMYC5,BDQ,"growth, -none-, -none-, -none-, -none-, -none-, -none-, -none-",0.03
+02-1055-2013185143-1-14-UKMYC5,KAN,"-none-, -none-, -none-, -none-, -none-",<= 1
+02-1055-2013185143-1-14-UKMYC5,ETH,"growth, growth, growth, -none-, -none-, -none-",2
+02-1055-2013185143-1-14-UKMYC5,AMI,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.25
+02-1055-2013185143-1-14-UKMYC5,EMB,"growth, growth, growth, growth, -none-, -none-, -none-, -none-",1
+02-1055-2013185143-1-14-UKMYC5,INH,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.05
+02-1055-2013185143-1-14-UKMYC5,LEV,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.5
+02-1055-2013185143-1-14-UKMYC5,MXF,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+02-1055-2013185143-1-14-UKMYC5,DLM,"-none-, -none-, -none-, -none-, -none-, -none-, -none-",<= 0.015
+02-1055-2013185143-1-14-UKMYC5,LZD,"growth, growth, growth, -none-, -none-, -none-, -none-",0.25
+02-1055-2013185143-1-14-UKMYC5,CFZ,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+02-1055-2013185143-1-14-UKMYC5,RIF,"growth, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+02-1055-2013185143-1-14-UKMYC5,RFB,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.06
+02-1055-2013185143-1-14-UKMYC5,PAS,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.12
