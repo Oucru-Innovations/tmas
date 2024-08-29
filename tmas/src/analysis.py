@@ -60,8 +60,9 @@ def visualize_growth_matrix(image_name: str,
                             growth_matrix: List[List[str]],
                             drug_info: Dict[str, Dict[str, List[Union[str, float]]]],
                             drug_results: Dict[str, Dict[str, Union[str, List[str]]]],
-                            plate_info: Dict[str, List[List[Union[str, float]]]],
+                            plate_info:Dict[str, List[List[Union[str, float]]]],
                             output_directory: str,
+                            skip_well_results: List[str],
                             show: bool = False) -> None:
     """
     Visualize the growth matrix on a drug susceptibility testing plate image.
@@ -85,6 +86,8 @@ def visualize_growth_matrix(image_name: str,
     :type plate_info: dict
     :param output_directory: The directory where the visualization image will be saved.
     :type output_directory: str
+    :param skip_well_results: List of drugs that have abnormal growth
+    :type show: list
     :param show: Boolean flag indicating whether to display the image after saving. If True, the image is displayed.
     :type show: bool
     :return: None
@@ -154,6 +157,10 @@ def visualize_growth_matrix(image_name: str,
     for drug, result in drug_results.items():
         print(f"{drug}: {result['growth_array']}, MIC: {result['MIC']}")
 
+    if skip_well_results:
+        print(f"Abnormal Growth Check for {image_name}: ", skip_well_results)
+
+        
 def save_mic_results(data: List[Dict[str, Union[str, float]]],
                     format_type: str,
                     filename: str,
@@ -230,11 +237,9 @@ def analyze_growth_matrix(image_name: str,
 
     drug_info = build_drug_info_dict(plate_design)
 
-    if growth_matrix[7][10] != 'growth' and growth_matrix[7][11] != 'growth':
-        print("Positive Control Wells - Invalid")
-        return
-
     drug_growth = {drug: ['-none-'] * len(info["dilutions"]) for drug, info in drug_info.items() if drug != "POS"}
+
+    positive_control_valid = (growth_matrix[7][10] == 'growth' and growth_matrix[7][11] == 'growth')
 
     for row in range(8):
         for col in range(12):
@@ -250,25 +255,57 @@ def analyze_growth_matrix(image_name: str,
     print(f"Number of drugs (excluding POS): {num_drugs}")
 
     drug_results = {}
-    for drug, growth_array in drug_growth.items():
-        all_growth = all(x == 'growth' for x in growth_array)
-        all_none = all(x == '-none-' for x in growth_array)
+    skip_well_results = []
+    # Check positive control well 
+    if not positive_control_valid:
+        # If both positive control wells are not valid, set all MIC results to "N/A"
+        print("Positive Control Wells - Invalid")
+        for drug, growth_array in drug_growth.items():
+            drug_results[drug] = {
+                "growth_array": growth_array,
+                "MIC": "N/A",
+            }
+    else:
+        for drug, growth_array in drug_growth.items():
+            all_growth = all(x == 'growth' for x in growth_array)
+            all_none = all(x == '-none-' for x in growth_array)
 
-        if all_growth:
-            mic = f">= {drug_info[drug]['concentrations'][-1]}"  # MIC is greater than or equal to the highest concentration
-        elif all_none:
-            mic = f"<= {drug_info[drug]['concentrations'][0]}"  # MIC is less than or equal to the lowest concentration
-        else:
-            for i in range(len(growth_array)):
-                if growth_array[i] == '-none-':
-                    mic = drug_info[drug]['concentrations'][i]
-                    break
+            # Initialize skip_well variable to False by default
+            skip_well = False
+            
+            # Determine MIC if all wells show growth
+            if all_growth:
+                mic = f">= {drug_info[drug]['concentrations'][-1]}"  # MIC is greater than or equal to the highest concentration
+
+            # Determine MIC if no wells show growth
+            elif all_none:
+                mic = f"<= {drug_info[drug]['concentrations'][0]}"  # MIC is less than or equal to the lowest concentration
+
             else:
-                mic = "Invalid"
+                # Check for skip wells (discontinuities in growth pattern)
+                for i in range(1, len(growth_array)):
+                    if growth_array[i] == 'growth' and growth_array[i - 1] == '-none-':
+                        skip_well = True  # Set skip_well to True
+                        break  # Exit loop since a skip well is detected
+                
+                if skip_well:
+                    skip_well_results.append(drug)
 
-        drug_results[drug] = {"growth_array": growth_array, "MIC": mic}
+                # Determine MIC for partial growth cases
+                for i in range(len(growth_array)):
+                    if growth_array[i] == '-none-':
+                        mic = drug_info[drug]['concentrations'][i]
+                        break
+                else:
+                    mic = "Invalid"
 
-    visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design, output_directory, show)
+            # Store the growth array, MIC, and skip_well for the current drug
+            drug_results[drug] = {
+                "growth_array": growth_array,
+                "MIC": mic,
+            }
+
+    visualize_growth_matrix(image_name, image, growth_matrix, drug_info, drug_results, plate_design, output_directory, skip_well_results, show)
     return drug_results
 
 def extract_image_name_from_path(image_path: str) -> str:
@@ -353,6 +390,7 @@ def analyze_and_extract_mic(image_path: str,
             {"Filename": filename, "Drug": drug, "Results": ', '.join(result["growth_array"]), "MIC": result["MIC"]}
             for drug, result in drug_results.items()
         ]
+
         save_mic_results(data_with_format, format_type, filename, output_directory)
     else:
         data = [

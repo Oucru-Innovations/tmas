@@ -1,0 +1,14 @@
+Filename,Drug,Results,MIC
+10-YA00125818-YA00125818-1-14-UKMYC6,BDQ,"growth, growth, growth, -none-, -none-, -none-, -none-, growth",0.06
+10-YA00125818-YA00125818-1-14-UKMYC6,EMB,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6,INH,"growth, growth, growth, growth, -none-, -none-, growth, -none-, -none-, -none-",0.4
+10-YA00125818-YA00125818-1-14-UKMYC6,RIF,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+10-YA00125818-YA00125818-1-14-UKMYC6,AMI,"growth, -none-, growth, -none-, -none-, -none-, -none-",0.5
+10-YA00125818-YA00125818-1-14-UKMYC6,LEV,"growth, growth, growth, -none-, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6,MXF,"growth, growth, growth, growth, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6,DLM,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.03
+10-YA00125818-YA00125818-1-14-UKMYC6,LZD,"growth, growth, growth, growth, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6,CFZ,"growth, growth, growth, -none-, -none-, -none-, -none-",0.25
+10-YA00125818-YA00125818-1-14-UKMYC6,ETH,"growth, growth, growth, growth, growth, -none-",8
+10-YA00125818-YA00125818-1-14-UKMYC6,RFB,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.06
+10-YA00125818-YA00125818-1-14-UKMYC6,KAN,"growth, growth, -none-, -none-, -none-",4
