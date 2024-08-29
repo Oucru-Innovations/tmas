@@ -104,7 +104,7 @@ def visualize_growth_matrix(image_name: str,
         raise ValueError("Input image format is not supported. Expected grayscale or RGB/BGR image.")
 
     # Create a figure and axis for plotting
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(8, 6))
     ax.imshow(img)
 
     # Identify wells on the plate
@@ -130,6 +130,7 @@ def visualize_growth_matrix(image_name: str,
             # Add drug name and concentration text annotations
             ax.text(well_x, well_y - well_radii[row, col] * 0.3, drug, ha='center', va='center', fontsize=10, color='black', alpha=0.8)
             ax.text(well_x, well_y + well_radii[row, col] * 0.3, conc, ha='center', va='center', fontsize=10, color='black', alpha=0.8)
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)  # Adjust these values to reduce padding
 
     # Remove axis ticks and labels
     ax.set_xticks([])
