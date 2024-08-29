@@ -1,0 +1,14 @@
+Filename,Drug,Results,MIC
+01-DR0053-DR0053-1-14-UKMYC6,BDQ,"growth, growth, growth, -none-, -none-, -none-, -none-, -none-",0.06
+01-DR0053-DR0053-1-14-UKMYC6,EMB,"growth, growth, growth, growth, growth, growth, -none-, -none-",16
+01-DR0053-DR0053-1-14-UKMYC6,INH,"growth, growth, growth, growth, growth, growth, growth, -none-, -none-, -none-",3.2
+01-DR0053-DR0053-1-14-UKMYC6,RIF,"growth, growth, growth, growth, growth, growth, growth, growth, growth",>= 8
+01-DR0053-DR0053-1-14-UKMYC6,AMI,"-none-, -none-, -none-, -none-, -none-, -none-, -none-",<= 0.25
+01-DR0053-DR0053-1-14-UKMYC6,LEV,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.5
+01-DR0053-DR0053-1-14-UKMYC6,MXF,"growth, growth, growth, -none-, -none-, -none-, -none-",0.5
+01-DR0053-DR0053-1-14-UKMYC6,DLM,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.03
+01-DR0053-DR0053-1-14-UKMYC6,LZD,"growth, growth, growth, -none-, -none-, -none-, -none-",0.5
+01-DR0053-DR0053-1-14-UKMYC6,CFZ,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.12
+01-DR0053-DR0053-1-14-UKMYC6,ETH,"growth, growth, growth, -none-, -none-, -none-",2
+01-DR0053-DR0053-1-14-UKMYC6,RFB,"growth, growth, growth, growth, growth, growth",>= 2
+01-DR0053-DR0053-1-14-UKMYC6,KAN,"-none-, -none-, -none-, -none-, -none-",<= 1
