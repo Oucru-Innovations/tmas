@@ -8,13 +8,24 @@ import os
 
 def process_image_file(image_path: str, format_type: str, plate_design: Dict[str, Any], output_directory: str, show: bool = False) -> Optional[Dict[str, Dict[str, Any]]]:
     """
-    Process a single image file and analyze MIC results.
+    Process a single image file to detect bacterial growth and analyze MIC (Minimum Inhibitory Concentration) results.
 
-    :param image_path: Path to the image file to be processed.
-    :param format_type: The format in which the MIC results should be saved (e.g., 'csv' or 'json').
-    :param plate_design: A dictionary containing the plate design information.
-    :param output_directory: The directory where the results should be saved.
-    :return: A dictionary of MIC values if the image is processed successfully, or None if the image is invalid.
+    This function checks the validity of an image file, applies necessary preprocessing steps, 
+    performs growth detection using an object detection model, and then analyzes the results 
+    to calculate MIC values for various drugs. The results are saved in the specified format.
+
+    :param image_path: The full path to the image file to be processed.
+    :type image_path: str
+    :param format_type: The format for saving MIC results, either 'csv' or 'json'.
+    :type format_type: str
+    :param plate_design: A dictionary containing the design details of the plate, including drug and dilution matrices.
+    :type plate_design: Dict[str, Any]
+    :param output_directory: The directory path where the output results and visualizations will be saved.
+    :type output_directory: str
+    :param show: A boolean flag that determines whether to display the visualization images. Defaults to False.
+    :type show: bool
+    :return: A dictionary containing MIC values if the image is processed successfully, or None if the image is invalid.
+    :rtype: Optional[Dict[str, Dict[str, Any]]]
     """
     if not is_image_file(image_path, plate_design):
         print(f"Skipping non-image file or invalid plate design: {image_path}")

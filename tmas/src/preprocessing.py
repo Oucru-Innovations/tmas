@@ -140,14 +140,18 @@ def preprocess_images(image: np.ndarray, image_path: str) -> np.ndarray:
     """
     Preprocess an image by applying a series of filtering and histogram adjustment techniques.
 
-    This function preprocesses an input image by sequentially applying multiple preprocessing steps:
+    This function preprocesses an input image through several steps to enhance its quality 
+    for subsequent analysis. The preprocessing steps include applying a mean shift filter, 
+    local histogram equalization, and histogram stretching. The processed image is then saved 
+    to a specified output directory.
 
-    :param image: The input image, which can be either grayscale or color.
+    :param image: The input image, which can be either in grayscale or color format.
     :type image: numpy.ndarray
-    :param image_path: The path to the image file, used to generate a path for saving the processed image.
+    :param image_path: The file path to the original image, used to determine the output directory 
+                       and filename for saving the processed image.
     :type image_path: str
 
-    :return: The image after applying preprocessing steps
+    :return: The image after applying all preprocessing steps.
     :rtype: numpy.ndarray
     """
     processed_image = mean_shift_filter(image)
@@ -161,4 +165,5 @@ def preprocess_images(image: np.ndarray, image_path: str) -> np.ndarray:
     cv2.imwrite(full_path, processed_image)
     print(f"Save filtered image as {full_path}")
     return processed_image
+
 
