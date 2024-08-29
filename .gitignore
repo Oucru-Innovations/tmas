@@ -146,11 +146,11 @@ dmypy.json
 # Ignore image files
 *.jpg
 *.jpeg
-# *.png
+*.png
 *.gif
 *.bmp
 *.tiff
-# .png
+.png
 
 # Ignore large files
 *.zip
