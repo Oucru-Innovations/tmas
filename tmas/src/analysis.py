@@ -172,7 +172,7 @@ def save_mic_results(data: List[Dict[str, Union[str, float]]],
     # print(f'Output directory for saving MIC results: {output_directory}')
     
     os.makedirs(output_directory, exist_ok=True)  # Ensure the output directory exists
-    full_path = os.path.join(output_directory, filename.replace('-raw', '-mic'))  # Ensure correct output path
+    full_path = os.path.join(output_directory, filename + '-mics')
 
     try:
         if format_type == 'csv':
