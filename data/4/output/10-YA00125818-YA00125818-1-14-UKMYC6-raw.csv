@@ -1,14 +1,14 @@
-Filename,Drug,Results,MIC,Skip Well
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,BDQ,"growth, growth, growth, -none-, -none-, -none-, -none-, growth",N/A,True
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,EMB,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-",1,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,INH,"growth, growth, growth, growth, -none-, -none-, growth, -none-, -none-, -none-",N/A,True
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,RIF,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-, -none-",0.12,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,AMI,"growth, -none-, growth, -none-, -none-, -none-, -none-",N/A,True
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,LEV,"growth, growth, growth, -none-, -none-, -none-, -none-",1,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,MXF,"growth, growth, growth, growth, -none-, -none-, -none-",1,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,DLM,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.03,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,LZD,"growth, growth, growth, growth, -none-, -none-, -none-",1,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,CFZ,"growth, growth, growth, -none-, -none-, -none-, -none-",0.25,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,ETH,"growth, growth, growth, growth, growth, -none-",8,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,RFB,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.06,False
-10-YA00125818-YA00125818-1-14-UKMYC6-raw,KAN,"growth, growth, -none-, -none-, -none-",4,False
+Filename,Drug,Results,MIC
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,BDQ,"growth, growth, growth, -none-, -none-, -none-, -none-, growth",0.06
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,EMB,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,INH,"growth, growth, growth, growth, -none-, -none-, growth, -none-, -none-, -none-",0.4
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,RIF,"growth, growth, -none-, -none-, -none-, -none-, -none-, -none-, -none-",0.12
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,AMI,"growth, -none-, growth, -none-, -none-, -none-, -none-",0.5
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,LEV,"growth, growth, growth, -none-, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,MXF,"growth, growth, growth, growth, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,DLM,"growth, growth, -none-, -none-, -none-, -none-, -none-",0.03
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,LZD,"growth, growth, growth, growth, -none-, -none-, -none-",1
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,CFZ,"growth, growth, growth, -none-, -none-, -none-, -none-",0.25
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,ETH,"growth, growth, growth, growth, growth, -none-",8
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,RFB,"-none-, -none-, -none-, -none-, -none-, -none-",<= 0.06
+10-YA00125818-YA00125818-1-14-UKMYC6-raw,KAN,"growth, growth, -none-, -none-, -none-",4
