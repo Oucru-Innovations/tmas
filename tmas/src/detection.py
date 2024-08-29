@@ -50,9 +50,9 @@ def resize_with_padding(image: np.ndarray,
     padding = ((target_size[0] - new_size[0]) // 2, (target_size[1] - new_size[1]) // 2)
     
     # Display the padded image for debugging
-    plt.imshow(new_image)
-    plt.title("Padded Image")
-    plt.show()
+    # plt.imshow(new_image)
+    # plt.title("Padded Image")
+    # plt.show()
     
     return new_image, padding, ratio
 
