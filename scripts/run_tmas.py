@@ -6,10 +6,15 @@ from tmas.src.utils import load_plate_design
 from tmas.src.process_image_file import process_image_file
 
 def main():
-    parser = argparse.ArgumentParser(description="Run TMAS for image processing, growth detection, and MIC analysis.")
+     # Initialize argparse to enhance the help documentation
+    parser = argparse.ArgumentParser(
+        description="Run TMAS for image processing, growth detection, and MIC analysis.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter  # Displays default values
+    )
     parser.add_argument("path", type=str, help="Path to the image or directory containing images.")
-    parser.add_argument("format_type", type=str, choices=['csv', 'json'], help="Format type for saving results: 'csv' or 'json'.", nargs='?', default='csv')
-    parser.add_argument("-visualize", "--visualize", action="store_true", help="Display images with growth detection results.")
+    parser.add_argument("format_type", type=str, choices=['csv', 'json'], help="Format type for saving results.",
+                        nargs='?', default='csv')
+    parser.add_argument("-v", "--visualize", action="store_true", help="Display images with growth detection results.")
 
     args = parser.parse_args()
 
