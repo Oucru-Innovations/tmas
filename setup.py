@@ -6,7 +6,7 @@ print("Detected packages:", packages)  # This should print the packages detected
 
 setup(
     name="tmas",
-    version="0.1.0",
+    version="0.0.3",
     packages=packages,  # This will include the packages detected by find_packages()
     install_requires=[
         "numpy",
