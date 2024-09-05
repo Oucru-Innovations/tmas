@@ -1,13 +1,16 @@
 # TB Microbial Analysis System (TMAS)
 
 ![GitHub stars](https://img.shields.io/github/stars/Oucru-Innovations/tmas?style=social)
-![Build Status](https://github.com/Oucru-Innovations/vital-DSP/actions/workflows/ci.yml/badge.svg)
+<!-- ![Build Status](https://github.com/Oucru-Innovations/vital-DSP/actions/workflows/ci.yml/badge.svg) -->
 
 [![codecov](https://codecov.io/gh/Oucru-Innovations/tmas/branch/master/graph/badge.svg)](https://codecov.io/gh/Oucru-Innovations/tmas)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![Python Versions](https://img.shields.io/badge/python-3.10%2B-blue)
 [![Documentation Status](https://readthedocs.org/projects/tb-microbial-analysis-system-tmas/badge/?version=latest)](tb-microbial-analysis-system-tmas.readthedocs.io/en/latest/?badge=latest)
+
+![PyPI Downloads](https://img.shields.io/pypi/dm/tmas)
+[![PyPI version](https://badge.fury.io/py/tmas.svg)](https://badge.fury.io/py/tmas)
 
 <!-- ![PyPI Downloads](https://img.shields.io/pypi/dm/vitalDSP)
 [![PyPI version](https://badge.fury.io/py/vitalDSP.svg)](https://badge.fury.io/py/vitalDSP) -->
@@ -25,6 +28,27 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
 
 ## Installation
 
+### Installation - Python Package
+1. Install the Python package from PyPi
+   ```bash
+   $ pip install tmas==1.0.1
+   ```
+
+2. Run ``TMAS`` on your Terminal
+   ```bash
+   $ run_tmas [folder_path] [output_format]
+   ```
+- folder_path: The direct path to the folder of the raw images
+- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+
+   or
+
+   ```bash
+   $ run_tmas [file_path] [output_format]
+   ```
+- file_path: The path to the raw image
+- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+
 ### Installation - GitHub
 
 1. Clone the repository and navigate to the project directory.
@@ -32,6 +56,7 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
    $ git clone https://github.com/Oucru-Innovations/tmas.git
    $ cd tmas
    ```
+
 2. Install the ``TMAS`` package using:
 
    ```bash
@@ -43,37 +68,23 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
 3. Run ``TMAS``:
 
    ```bash
-   $ run_tmas -visualize [file_path] [output_type]
+   $ run_tmas [file_path] [output_format]
    ```
 
-- (Optional) -visualize/--visualize: to illustrate the output image 
 - file_path: the direct path to the raw image
-- output_type: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
    or
 
    ```bash
-   $ run_tmas -visualize [folder_path] [output_format]
+   $ run_tmas [folder_path] [output_format]
    ```
-- (Optional) -visualize/--visualize: to illustrate the output image 
+<!-- - (Optional) -visualize/--visualize: to illustrate the output image  -->
 - folder_path: The path to the folder of the raw images
 - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 <!-- - Example: python -m scripts.run_tmas data/1 csv -->
 
 If encounting any error in Installing the packages, please refer to the Debugging section.
-
-### Installation - Python Package (Upcoming when all features finalised)
-1. Install the Python package from PyPi
-   ```bash
-   pip install tmas==1.0.1
-   ```
-2. Run ``TMAS`` on your Terminal
-   ```bash
-   run_tmas -visualize [folder_path] [output_format]
-   ```
-- (Optional) -visualize/--visualize: to illustrate the output image 
-- folder_path: The path to the folder of the raw images
-- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
 
 ## Tutorial 
@@ -86,7 +97,7 @@ If encounting any error in Installing the packages, please refer to the Debuggin
    1/ 2/ 3/ 4/ 5/
    ```
 
-   In each examples folder, there is the
+   In each examples folder, there is a raw iamge
 
    ```bash
    $ ls 1/
@@ -145,6 +156,23 @@ If encounting any error in Installing the packages, please refer to the Debuggin
    - ``01-DR0013-DR0013-1-14-UKMYC6-mics.csv`` contains the information, including filename, drug name, growth detection results, MIC result.
    - ``01-DR0013-DR0013-1-14-UKMYC6-mics.json`` contains the same information as the ``csv`` file but in a different format per requested.
    
+To see the other options available for the `run_tmas` python script:
+```bash
+$ run_tmas --help
+usage: run_tmas [-h] [-visualize] path [{csv,json}]
+
+Run TMAS for image processing, growth detection, and MIC analysis.
+
+positional arguments:
+  path                  Path to the image or directory containing images.
+  {csv,json}            Format type for saving results: 'csv' or 'json'.
+
+optional arguments:
+  -h, --help            Show this help message and exit
+  -visualize, --visualize
+                        Display images with growth detection results.   
+```     
+
    
 ## Usage
 
@@ -185,7 +213,7 @@ If encounting any error in Installing the packages, please refer to the Debuggin
 - output_format: output MIC of each drug in csv or json file
 - Example: please refer to ``Tutorial Session``
 
-- If you finished installing `TMAS` package but run_tmas direct you to your github path, you can try creating a virtual environment and try installing the package again:
+If you finished installing `TMAS` package but `run_tmas` direct you to your github path, you can try creating a virtual environment and try installing the package again:
 
 1. Set Up a New Virtual Environment
 
@@ -199,14 +227,15 @@ If encounting any error in Installing the packages, please refer to the Debuggin
    ```
 3. Run `TMAS`:
    ```bash
-   run_tmas -visualize [folder_path] [output_format]
+   run_tmas [folder_path] [output_format]
    ```
-   - (Optional) -visualize/--visualize: to illustrate the output image 
+   <!-- - (Optional) -visualize/--visualize: to illustrate the output image  -->
    - folder_path: The path to the folder of the raw images
    - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
 ## Contributing
 Please refer to this link for the guides (to be updated when the Repo is public)
+
 ## License
 
 `tmas` was created by RMIT 2OO2 TEAM. It is licensed under the terms of the MIT license.

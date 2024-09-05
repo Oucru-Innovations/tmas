@@ -1,0 +1,30 @@
+tmas.src
+========
+
+.. py:module:: tmas.src
+
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/tmas/src/models/index
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/tmas/src/analysis/index
+   /autoapi/tmas/src/config/index
+   /autoapi/tmas/src/detection/index
+   /autoapi/tmas/src/input_validation/index
+   /autoapi/tmas/src/preprocessing/index
+   /autoapi/tmas/src/process_image_file/index
+   /autoapi/tmas/src/utils/index
+
+

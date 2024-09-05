@@ -1,0 +1,26 @@
+tmas.src.utils
+==============
+
+.. py:module:: tmas.src.utils
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: load_plate_design() -> Dict[str, Any]
+
+   Load the plate design configuration from a JSON file.
+
+   :return: A dictionary containing the plate design configuration.
+
+
+.. py:function:: load_image(image_path: str) -> numpy.ndarray
+
+   Load an image from the specified file path.
+
+   :param image_path: The path to the image file.
+   :return: The loaded image as a NumPy array.
+
+

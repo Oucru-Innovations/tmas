@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tmas.src.preprocessing &mdash; tmas  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tmas
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tmas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tmas.src.preprocessing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tmas.src.preprocessing</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="convert_image_to_colour">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.convert_image_to_colour">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_image_to_colour</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a grayscale image to a color image by replicating the grayscale values across the RGB channels.</span>
+
+<span class="sd">    This function takes a single-channel grayscale image and converts it into a 3-channel color image </span>
+<span class="sd">    by assigning the grayscale values to each of the Red, Green, and Blue channels.</span>
+
+<span class="sd">    :param image: The input grayscale image.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+
+<span class="sd">    :return: The converted color image with the same height and width as the input image, </span>
+<span class="sd">             but with 3 color channels (RGB).</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create an empty 3D array with the same height and width as the original image,</span>
+    <span class="n">new_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+
+    <span class="c1"># Assign the grayscale image to each of the 3 color channels (Red, Green, and Blue).</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+        <span class="n">new_image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span>
+
+    <span class="k">return</span> <span class="n">new_image</span></div>
+
+
+<span class="c1"># Function to convert color image to grey scale image</span>
+<div class="viewcode-block" id="convert_image_to_grey">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.convert_image_to_grey">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_image_to_grey</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a color image to a grayscale image.</span>
+
+<span class="sd">    This function takes a color image with three channels (typically in BGR format) and converts </span>
+<span class="sd">    it into a single-channel grayscale image. </span>
+
+<span class="sd">    :param image: The input color image, expected to be in BGR format.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+
+<span class="sd">    :return: The converted grayscale image.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_image</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_image</span></div>
+
+
+<span class="c1"># Function to apply a mean shift filter</span>
+<div class="viewcode-block" id="mean_shift_filter">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.mean_shift_filter">[docs]</a>
+<span class="k">def</span> <span class="nf">mean_shift_filter</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">spatial_radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">colour_radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply a mean shift filter to an image</span>
+
+<span class="sd">    This function applies a mean shift filter to the input image. If the input image is not already a 3-channel color image, it will first be converted </span>
+<span class="sd">    to color. The mean shift filter is then applied using the specified spatial and color radii.</span>
+
+<span class="sd">    :param image: The input image, which can be either a grayscale or color image.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+<span class="sd">    :param spatial_radius: The spatial radius of the mean shift filter. Default is 10.</span>
+<span class="sd">    :type spatial_radius: int, optional</span>
+<span class="sd">    :param colour_radius: The color radius of the mean shift filter. Default is 10.</span>
+<span class="sd">    :type colour_radius: int, optional</span>
+
+<span class="sd">    :return: The filtered image after applying the mean shift filter.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">convert_image_to_colour</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="c1"># Apply the mean shift filter</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">pyrMeanShiftFiltering</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">spatial_radius</span><span class="p">,</span> <span class="n">colour_radius</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image</span> </div>
+
+
+<span class="c1"># Function to apply a Contrast Limited Adaptive Histogram Equalization filter.</span>
+<div class="viewcode-block" id="equalise_histograms_locally">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.equalise_histograms_locally">[docs]</a>
+<span class="k">def</span> <span class="nf">equalise_histograms_locally</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">well_dimensions</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform local histogram equalization on an image using CLAHE (Contrast Limited Adaptive Histogram Equalization).</span>
+
+<span class="sd">    This function applies local histogram equalization to an image to enhance contrast. If the input image is a color image </span>
+<span class="sd">    (3 channels), it will first be converted to grayscale.</span>
+
+<span class="sd">    :param image: The input image, which can be either grayscale or color.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+<span class="sd">    :param well_dimensions: The dimensions of the grid used for local histogram equalization. Default is (8, 12).</span>
+<span class="sd">    :type well_dimensions: tuple[int, int], optional</span>
+
+<span class="sd">    :return: The image after applying local histogram equalization.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if the image is color (3 channels)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">convert_image_to_grey</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="c1"># Apply the CLAHE filter for local histogram equalization</span>
+    <span class="n">clahe</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">createCLAHE</span><span class="p">(</span><span class="n">clipLimit</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">tileGridSize</span><span class="o">=</span><span class="n">well_dimensions</span><span class="p">)</span>
+    <span class="n">equalised_image</span> <span class="o">=</span> <span class="n">clahe</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">equalised_image</span></div>
+
+
+<span class="c1"># Function to apply stretch histogram to improve contrast</span>
+<div class="viewcode-block" id="stretch_histogram">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.stretch_histogram">[docs]</a>
+<span class="k">def</span> <span class="nf">stretch_histogram</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stretch the histogram of an image by adjusting its pixel intensity values.</span>
+
+<span class="sd">    This function stretches the histogram of an image by calculating the mode, subtracting it from the </span>
+<span class="sd">    image, and then scaling the pixel values based on lower and upper percentiles. </span>
+
+<span class="sd">    :param image: The input image, typically in grayscale, whose histogram will be stretched.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+
+<span class="sd">    :return: The image with a stretched histogram, with pixel values adjusted to enhance contrast.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the mode of the image</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Subtract the mode from the image</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">))</span> <span class="o">-</span> <span class="n">mode</span>
+
+    <span class="c1"># Calculate the lower and upper percentiles after subtraction</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">95</span><span class="p">)</span>
+
+    <span class="c1"># Determine scaling factors</span>
+    <span class="n">pos_factor</span> <span class="o">=</span> <span class="mf">40.</span> <span class="o">/</span> <span class="n">upper</span>
+    <span class="n">neg_factor</span> <span class="o">=</span> <span class="o">-</span><span class="mf">110.</span> <span class="o">/</span> <span class="n">lower</span>
+
+    <span class="c1"># Apply scaling factors based on whether pixel values are positive or negative</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">image</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos_factor</span><span class="p">,</span> <span class="n">neg_factor</span><span class="p">))</span>
+
+    <span class="c1"># Offset the image to ensure positive pixel values</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span> <span class="o">+</span> <span class="mf">180.</span>
+
+    <span class="k">return</span> <span class="n">image</span></div>
+
+
+<span class="c1"># Function to preprocess images with a series of filters</span>
+<div class="viewcode-block" id="preprocess_images">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/preprocessing/index.html#tmas.src.preprocessing.preprocess_images">[docs]</a>
+<span class="k">def</span> <span class="nf">preprocess_images</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">image_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess an image by applying a series of filtering and histogram adjustment techniques.</span>
+
+<span class="sd">    This function preprocesses an input image through several steps to enhance its quality </span>
+<span class="sd">    for subsequent analysis. The preprocessing steps include applying a mean shift filter, </span>
+<span class="sd">    local histogram equalization, and histogram stretching. The processed image is then saved </span>
+<span class="sd">    to a specified output directory.</span>
+
+<span class="sd">    :param image: The input image, which can be either in grayscale or color format.</span>
+<span class="sd">    :type image: numpy.ndarray</span>
+<span class="sd">    :param image_path: The file path to the original image, used to determine the output directory </span>
+<span class="sd">                       and filename for saving the processed image.</span>
+<span class="sd">    :type image_path: str</span>
+
+<span class="sd">    :return: The image after applying all preprocessing steps.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">processed_image</span> <span class="o">=</span> <span class="n">mean_shift_filter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">processed_image</span> <span class="o">=</span> <span class="n">equalise_histograms_locally</span><span class="p">(</span><span class="n">processed_image</span><span class="p">)</span>
+    <span class="n">processed_image</span> <span class="o">=</span> <span class="n">stretch_histogram</span><span class="p">(</span><span class="n">processed_image</span><span class="p">)</span>
+    <span class="n">final_output_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">image_path</span><span class="p">),</span> <span class="s2">&quot;output&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">final_output_directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">final_output_directory</span><span class="p">,</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-raw&#39;</span><span class="p">,</span> <span class="s1">&#39;-filtered&#39;</span><span class="p">))</span>
+    <span class="c1"># Save the processed image using OpenCV</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">full_path</span><span class="p">,</span> <span class="n">processed_image</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Save filtered image as </span><span class="si">{</span><span class="n">full_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">processed_image</span></div>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, RMIT 2OO2 TEAM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

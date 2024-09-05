@@ -10,20 +10,6 @@ Subpackages
 .. toctree::
    :maxdepth: 1
 
-   /autoapi/tmas/models/index
-
-
-Submodules
-----------
-
-.. toctree::
-   :maxdepth: 1
-
-   /autoapi/tmas/analysis/index
-   /autoapi/tmas/config/index
-   /autoapi/tmas/detection/index
-   /autoapi/tmas/preprocessing/index
-   /autoapi/tmas/tmas/index
-   /autoapi/tmas/utils/index
+   /autoapi/tmas/src/index
 
 

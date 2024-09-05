@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tmas.src.process_image_file &mdash; tmas  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            tmas
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">tmas</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tmas.src.process_image_file</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tmas.src.process_image_file</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">.input_validation</span> <span class="kn">import</span> <span class="n">is_image_file</span>
+<span class="kn">from</span> <span class="nn">.analysis</span> <span class="kn">import</span> <span class="n">analyze_and_extract_mic</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">load_image</span>
+<span class="kn">from</span> <span class="nn">.preprocessing</span> <span class="kn">import</span> <span class="n">preprocess_images</span>
+<span class="kn">from</span> <span class="nn">.detection</span> <span class="kn">import</span> <span class="n">detect_growth</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="process_image_file">
+<a class="viewcode-back" href="../../../autoapi/tmas/src/process_image_file/index.html#tmas.src.process_image_file.process_image_file">[docs]</a>
+<span class="k">def</span> <span class="nf">process_image_file</span><span class="p">(</span><span class="n">image_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">format_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process a single image file to detect bacterial growth and analyze MIC (Minimum Inhibitory Concentration) results.</span>
+
+<span class="sd">    This function checks the validity of an image file, applies necessary preprocessing steps, </span>
+<span class="sd">    performs growth detection using an object detection model, and then analyzes the results </span>
+<span class="sd">    to calculate MIC values for various drugs. The results are saved in the specified format.</span>
+
+<span class="sd">    :param image_path: The full path to the image file to be processed.</span>
+<span class="sd">    :type image_path: str</span>
+<span class="sd">    :param format_type: The format for saving MIC results, either &#39;csv&#39; or &#39;json&#39;.</span>
+<span class="sd">    :type format_type: str</span>
+<span class="sd">    :param plate_design: A dictionary containing the design details of the plate, including drug and dilution matrices.</span>
+<span class="sd">    :type plate_design: Dict[str, Any]</span>
+<span class="sd">    :param output_directory: The directory path where the output results and visualizations will be saved.</span>
+<span class="sd">    :type output_directory: str</span>
+<span class="sd">    :param show: A boolean flag that determines whether to display the visualization images. Defaults to False.</span>
+<span class="sd">    :type show: bool</span>
+<span class="sd">    :return: A dictionary containing MIC values if the image is processed successfully, or None if the image is invalid.</span>
+<span class="sd">    :rtype: Optional[Dict[str, Dict[str, Any]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_image_file</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping non-image file or invalid plate design: </span><span class="si">{</span><span class="n">image_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Check if the image file name contains &#39;-filtered&#39;</span>
+    <span class="k">if</span> <span class="s1">&#39;-filtered&#39;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping preprocessing for already filtered image: </span><span class="si">{</span><span class="n">image_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">processed_image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+        <span class="n">processed_image</span> <span class="o">=</span> <span class="n">preprocess_images</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">image_path</span><span class="o">=</span><span class="n">image_path</span><span class="p">)</span>
+    
+    <span class="n">detections</span><span class="p">,</span> <span class="n">inference_time</span> <span class="o">=</span> <span class="n">detect_growth</span><span class="p">(</span><span class="n">processed_image</span><span class="p">)</span>
+
+    <span class="c1"># Pass the correct output_directory to analyze_and_extract_mic</span>
+    <span class="n">mic_values</span> <span class="o">=</span> <span class="n">analyze_and_extract_mic</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">processed_image</span><span class="p">,</span> <span class="n">detections</span><span class="p">,</span> <span class="n">plate_design</span><span class="p">,</span> <span class="n">format_type</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mic_values</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, RMIT 2OO2 TEAM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

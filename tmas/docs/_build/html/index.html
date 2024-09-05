@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TMAS documentation &mdash; tmas  documentation</title>
+  <title>TMAS’s documentation &mdash; tmas  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
@@ -44,7 +44,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
@@ -66,7 +66,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">TMAS documentation</li>
+      <li class="breadcrumb-item active">TMAS’s documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,13 +76,135 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tmas-documentation">
-<h1>TMAS documentation<a class="headerlink" href="#tmas-documentation" title="Link to this heading"></a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
+  <section id="tmas-s-documentation">
+<h1>TMAS’s documentation<a class="headerlink" href="#tmas-s-documentation" title="Link to this heading"></a></h1>
+<section id="overview">
+<span id="tutorial"></span><span id="installation-python"></span><span id="installation-github"></span><span id="usage"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The package uses deep learning to detect M. tuberculosis growth in 96-well microtiter plates and determines <strong>Minimum Inhibitory Concentrations (MICs)</strong>.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2><a class="reference internal" href="#usage"><span class="std std-ref">Usage</span></a><a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TMAS</span></code> can be used to detect growth in a 96-well plate and calculate the MIC result of each drug based on the assigned plate design (<em>UKMYC5</em> or <em>UKMYC6</em>) and plot the results</p>
+</section>
+<section id="id2">
+<h2><a class="reference internal" href="#installation-github"><span class="std std-ref">Installation - GitHub</span></a><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Clone the repository and navigate to the project directory.</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Oucru-Innovations/tmas/
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>tmas
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">TMAS</span></code> package using:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">TMAS</span></code>:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>-visualize<span class="w"> </span><span class="o">[</span>folder_path<span class="o">]</span><span class="w"> </span><span class="o">[</span>output_format<span class="o">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>(Optional) -visualize/–visualize: to illustrate the output image</p></li>
+<li><p>folder_path: The path to the folder of the raw images</p></li>
+<li><p>output_format: output MIC of each drug in <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> file (default format is <code class="docutils literal notranslate"><span class="pre">csv</span></code>)</p></li>
+</ul>
+<p>If encounting any error in Installing the packages, please refer to the Debugging section.</p>
+</section>
+<section id="installation-python-package">
+<h2><a class="reference internal" href="#installation-python"><span class="std std-ref">Installation - Python Package</span></a><a class="headerlink" href="#installation-python-package" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">TMAS</span></code> PyPi package:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">tmas</span><span class="o">==</span><span class="m">1</span>.0.1
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">TMAS</span></code>:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>-visualize<span class="w"> </span><span class="o">[</span>folder_path<span class="o">]</span><span class="w"> </span><span class="o">[</span>output_format<span class="o">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>(Optional) -visualize/–visualize: to illustrate the output image</p></li>
+<li><p>folder_path: The path to the folder of the raw images</p></li>
+<li><p>output_format: output MIC of each drug in <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> file (default format is <code class="docutils literal notranslate"><span class="pre">csv</span></code>)</p></li>
+</ul>
+</section>
+<section id="tutorial-to-be-updated-when-the-examples-are-uploaded">
+<h2><a class="reference internal" href="#tutorial"><span class="std std-ref">Tutorial</span></a> (to be updated when the examples are uploaded)<a class="headerlink" href="#tutorial-to-be-updated-when-the-examples-are-uploaded" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Explore the examples folder</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>data
+<span class="gp">$ </span>ls
+<span class="go">1/ 2/ 3/ 4/ 5/</span>
+</pre></div>
+</div>
+<p>In each examples folder, there is the raw image with the exact same name with the folder</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls<span class="w"> </span><span class="m">1</span>/
+<span class="go">01-DR0013-DR0013-1-14-UKMYC6-raw.png</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>To process and analyse a single image using the default settings is simply</p></li>
+</ol>
+<p>Choose your desired MIC output file:</p>
+<ul class="simple">
+<li><p>json: with only 1 image</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>data/1/01-DR0013-DR0013-1-14-UKMYC6-raw.png<span class="w"> </span>json
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>json: with a whole folder</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>data/1<span class="w"> </span>json
+</pre></div>
+</div>
+<p>or</p>
+<ul class="simple">
+<li><p>csv: with only 1 image</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>tmas_run<span class="w"> </span><span class="m">01</span>-DR0013-DR0013-1-14-UKMYC6-raw.png<span class="w"> </span>csv
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>csv: with a whole folder</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>data/1<span class="w"> </span>csv
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Growth detection output:</p></li>
+</ol>
+<a class="reference internal image-reference" href="_images/sampleoutput.png"><img alt="Output Example" src="_images/sampleoutput.png" style="width: 600px;" /></a>
+<p>4. Output files:
+After <code class="docutils literal notranslate"><span class="pre">TMAS</span></code> has done running, the growth detection and MIC results will be displayed in your terminal.</p>
+<p>Not only that, the growth detection image and the MIC results file with the chosen format will be saved in the same folder with the input image.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls<span class="w"> </span>-a<span class="w"> </span><span class="m">1</span>/
+<span class="go">output/ 01-DR0013-DR0013-1-14-UKMYC6-raw.png</span>
+<span class="gp">$ </span>ls<span class="w"> </span>-a<span class="w"> </span><span class="m">1</span>/output/
+<span class="go">01-DR0013-DR0013-1-14-UKMYC6-growth-matrix.png</span>
+<span class="go">01-DR0013-DR0013-1-14-UKMYC6-mics.csv</span>
+<span class="go">01-DR0013-DR0013-1-14-UKMYC6-mics.json</span>
+<span class="go">01-DR0013-DR0013-1-14-UKMYC6-filtered.png</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">01-DR0013-DR0013-1-14-UKMYC6-raw.png</span></code> is the original image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">01-DR0013-DR0013-1-14-UKMYC6-filered.png</span></code> is the filtered image after preprocessing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">01-DR0013-DR0013-1-14-UKMYC6-growth-matrix.png</span></code> is the image with the growth detection plotted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">01-DR0013-DR0013-1-14-UKMYC6-mics.csv</span></code> contains the information, including filename, drug name, growth detection results, MIC result.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">01-DR0013-DR0013-1-14-UKMYC6-mics.json</span></code> contains the same information as the <code class="docutils literal notranslate"><span class="pre">csv</span></code> file but in a different format per requested.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#v1-0-0-2024-08-16">[v1.0.0] - 2024-08-16</a></li>
@@ -106,10 +228,12 @@ documentation for details.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/tmas/index.html">tmas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/conf/index.html">conf</a></li>
 </ul>
 </li>
 </ul>
 </div>
+</section>
 </section>
 
 

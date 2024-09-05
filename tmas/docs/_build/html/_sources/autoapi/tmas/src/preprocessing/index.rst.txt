@@ -1,0 +1,108 @@
+tmas.src.preprocessing
+======================
+
+.. py:module:: tmas.src.preprocessing
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: convert_image_to_colour(image: numpy.ndarray) -> numpy.ndarray
+
+   Convert a grayscale image to a color image by replicating the grayscale values across the RGB channels.
+
+   This function takes a single-channel grayscale image and converts it into a 3-channel color image
+   by assigning the grayscale values to each of the Red, Green, and Blue channels.
+
+   :param image: The input grayscale image.
+   :type image: numpy.ndarray
+
+   :return: The converted color image with the same height and width as the input image,
+            but with 3 color channels (RGB).
+   :rtype: numpy.ndarray
+
+
+.. py:function:: convert_image_to_grey(image: numpy.ndarray) -> numpy.ndarray
+
+   Convert a color image to a grayscale image.
+
+   This function takes a color image with three channels (typically in BGR format) and converts
+   it into a single-channel grayscale image.
+
+   :param image: The input color image, expected to be in BGR format.
+   :type image: numpy.ndarray
+
+   :return: The converted grayscale image.
+   :rtype: numpy.ndarray
+
+
+.. py:function:: mean_shift_filter(image: numpy.ndarray, spatial_radius: int = 10, colour_radius: int = 10) -> numpy.ndarray
+
+   Apply a mean shift filter to an image
+
+   This function applies a mean shift filter to the input image. If the input image is not already a 3-channel color image, it will first be converted
+   to color. The mean shift filter is then applied using the specified spatial and color radii.
+
+   :param image: The input image, which can be either a grayscale or color image.
+   :type image: numpy.ndarray
+   :param spatial_radius: The spatial radius of the mean shift filter. Default is 10.
+   :type spatial_radius: int, optional
+   :param colour_radius: The color radius of the mean shift filter. Default is 10.
+   :type colour_radius: int, optional
+
+   :return: The filtered image after applying the mean shift filter.
+   :rtype: numpy.ndarray
+
+
+.. py:function:: equalise_histograms_locally(image: numpy.ndarray, well_dimensions: Tuple[int, int] = (8, 12)) -> numpy.ndarray
+
+   Perform local histogram equalization on an image using CLAHE (Contrast Limited Adaptive Histogram Equalization).
+
+   This function applies local histogram equalization to an image to enhance contrast. If the input image is a color image
+   (3 channels), it will first be converted to grayscale.
+
+   :param image: The input image, which can be either grayscale or color.
+   :type image: numpy.ndarray
+   :param well_dimensions: The dimensions of the grid used for local histogram equalization. Default is (8, 12).
+   :type well_dimensions: tuple[int, int], optional
+
+   :return: The image after applying local histogram equalization.
+   :rtype: numpy.ndarray
+
+
+.. py:function:: stretch_histogram(image: numpy.ndarray) -> numpy.ndarray
+
+   Stretch the histogram of an image by adjusting its pixel intensity values.
+
+   This function stretches the histogram of an image by calculating the mode, subtracting it from the
+   image, and then scaling the pixel values based on lower and upper percentiles.
+
+   :param image: The input image, typically in grayscale, whose histogram will be stretched.
+   :type image: numpy.ndarray
+
+   :return: The image with a stretched histogram, with pixel values adjusted to enhance contrast.
+   :rtype: numpy.ndarray
+
+
+
+.. py:function:: preprocess_images(image: numpy.ndarray, image_path: str) -> numpy.ndarray
+
+   Preprocess an image by applying a series of filtering and histogram adjustment techniques.
+
+   This function preprocesses an input image through several steps to enhance its quality
+   for subsequent analysis. The preprocessing steps include applying a mean shift filter,
+   local histogram equalization, and histogram stretching. The processed image is then saved
+   to a specified output directory.
+
+   :param image: The input image, which can be either in grayscale or color format.
+   :type image: numpy.ndarray
+   :param image_path: The file path to the original image, used to determine the output directory
+                      and filename for saving the processed image.
+   :type image_path: str
+
+   :return: The image after applying all preprocessing steps.
+   :rtype: numpy.ndarray
+
+

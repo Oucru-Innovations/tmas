@@ -79,7 +79,33 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-tmas"></span></section>
+<dl class="py function" id="module-tmas">
+<dt class="sig sig-object py" id="tmas.process_image_file">
+<span class="sig-prename descclassname"><span class="pre">tmas.</span></span><span class="sig-name descname"><span class="pre">process_image_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plate_design</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tmas/src/process_image_file.html#process_image_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tmas.process_image_file" title="Link to this definition"></a></dt>
+<dd><p>Process a single image file to detect bacterial growth and analyze MIC (Minimum Inhibitory Concentration) results.</p>
+<p>This function checks the validity of an image file, applies necessary preprocessing steps,
+performs growth detection using an object detection model, and then analyzes the results
+to calculate MIC values for various drugs. The results are saved in the specified format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_path</strong> (<em>str</em>) – The full path to the image file to be processed.</p></li>
+<li><p><strong>format_type</strong> (<em>str</em>) – The format for saving MIC results, either ‘csv’ or ‘json’.</p></li>
+<li><p><strong>plate_design</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary containing the design details of the plate, including drug and dilution matrices.</p></li>
+<li><p><strong>output_directory</strong> (<em>str</em>) – The directory path where the output results and visualizations will be saved.</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – A boolean flag that determines whether to display the visualization images. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing MIC values if the image is processed successfully, or None if the image is invalid.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[Dict[str, Dict[str, Any]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 
 
            </div>
