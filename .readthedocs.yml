@@ -5,15 +5,16 @@
 # Required
 version: 2
 
-# Set the OS, Python version and other tools you might need
+# Set the OS, Python version, and other tools you might need
 build:
   os: ubuntu-22.04
   tools:
     python: "3.9"
   jobs:
     post_install:
-      - # Match this with the 'python_requires' in setup.py
+      # Match this with the 'python_requires' in setup.py
       - pip install git+https://github.com/Oucru-Innovations/tmas.git
+
 python:
   install:
     - requirements: docs/requirements.txt
@@ -25,7 +26,6 @@ formats:
   - pdf
   - epub
 
-  
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
   configuration: tmas/docs/conf.py
