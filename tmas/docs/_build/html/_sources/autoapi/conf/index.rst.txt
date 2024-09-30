@@ -1,0 +1,47 @@
+conf
+====
+
+.. py:module:: conf
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: project
+   :value: 'tmas'
+
+
+.. py:data:: copyright
+   :value: '2024, RMIT 2OO2 TEAM'
+
+
+.. py:data:: author
+   :value: 'RMIT 2OO2 TEAM'
+
+
+.. py:data:: source_suffix
+   :value: ['.rst', '.md']
+
+
+.. py:data:: extensions
+   :value: ['myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode',...
+
+
+.. py:data:: autoapi_dirs
+   :value: ['../']
+
+
+.. py:data:: autoapi_options
+   :value: ['members', 'undoc-members']
+
+
+.. py:data:: exclude_patterns
+   :value: ['_build', 'Thumbs.db', '.DS_Store']
+
+
+.. py:data:: html_theme
+   :value: 'sphinx_rtd_theme'
+
+

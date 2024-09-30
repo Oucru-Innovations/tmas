@@ -1,0 +1,25 @@
+tmas.src.models.yolo
+====================
+
+.. py:module:: tmas.src.models.yolo
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: current_dir
+
+.. py:data:: weights
+
+.. py:class:: YOLOv8(weights=weights)
+
+   .. py:attribute:: model
+
+
+   .. py:method:: predict(img)
+
+

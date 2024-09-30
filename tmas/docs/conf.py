@@ -29,7 +29,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "autoapi.extension",
 ]
-autoapi_dirs = ["../tmas"]
+autoapi_dirs = ["../"]
 autoapi_options = ['members', 'undoc-members']
 
 

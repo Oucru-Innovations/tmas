@@ -1,0 +1,163 @@
+tmas.src.analysis
+=================
+
+.. py:module:: tmas.src.analysis
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: build_drug_info_dict(plate_info: Dict[str, List[List[Union[str, float]]]]) -> Dict[str, Dict[str, List[Union[str, float]]]]
+
+   Build a dictionary containing drug information based on plate data.
+
+   This function processes the `plate_info` dictionary. It returns a
+   dictionary where each drug is a key, and the corresponding value is another
+   dictionary containing sorted lists of dilutions and concentrations.
+
+
+   :param plate_info: A dictionary containing the following keys:
+       - "drug_matrix":
+       - "dilution_matrix":
+       - "conc_matrix":
+   :type plate_info: dict
+
+   :return: A dictionary where each key is a drug name, and the value is another dictionary
+            containing:
+            - "dilutions"
+            - "concentrations"
+   :rtype: dict
+
+   :raises KeyError: If any of the expected keys ("drug_matrix", "dilution_matrix", "conc_matrix")
+                     are missing from `plate_info`.
+
+
+.. py:function:: visualize_growth_matrix(image_name: str, img: Any, growth_matrix: List[List[str]], drug_info: Dict[str, Dict[str, List[Union[str, float]]]], drug_results: Dict[str, Dict[str, Union[str, List[str]]]], plate_info: Dict[str, List[List[Union[str, float]]]], output_directory: str, skip_well_results: List[str], show: bool = False) -> None
+
+   Visualize the growth matrix on a drug susceptibility testing plate image.
+
+   This function overlays the growth detection information on an image of a microtitre plate,
+   highlighting wells with detected growth, and annotating the wells with the corresponding drug
+   names and concentrations. The visualized image is saved to the specified output directory,
+   and optionally displayed based on the `show` parameter.
+
+   :param image_name: The base name of the image, used for labeling and saving results.
+   :type image_name: str
+   :param img: The image of the plate. If the image is in grayscale or BGR format, it will be converted to RGB.
+   :type img: numpy.ndarray
+   :param growth_matrix: A matrix indicating the growth status of each well ('growth' or '-none-').
+   :type growth_matrix: list[list[str]]
+   :param drug_info: A dictionary containing drug information, including dilutions and concentrations for each drug.
+   :type drug_info: dict
+   :param drug_results: A dictionary containing the results of the drug susceptibility test, including MIC values for each drug.
+   :type drug_results: dict
+   :param plate_info: A dictionary containing plate-specific information, including drug and concentration matrices.
+   :type plate_info: dict
+   :param output_directory: The directory where the visualization image will be saved.
+   :type output_directory: str
+   :param skip_well_results: List of drugs that have abnormal growth
+   :type show: list
+   :param show: Boolean flag indicating whether to display the image after saving. If True, the image is displayed.
+   :type show: bool
+   :return: None
+   :rtype: None
+
+
+.. py:function:: save_mic_results(data: List[Dict[str, Union[str, float]]], format_type: str, filename: str, output_directory: str) -> None
+
+   Save MIC results in the specified format to the specified directory,
+   appending to existing files if they already exist.
+
+   :param data: List of dictionaries containing drug, results, MIC, and image name.
+   :param format_type: 'csv' or 'json' for the file format.
+   :param filename: Base filename for the output file.
+   :param output_directory: The directory where the results should be saved.
+   :type output_directory: str
+
+
+.. py:function:: analyze_growth_matrix(image_name: str, image: Any, growth_matrix: List[List[str]], plate_design: Dict[str, List[List[Union[str, float]]]], plate_design_type: str, output_directory: str, show: bool = False) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]
+
+   Analyze the growth matrix and determine the Minimum Inhibitory Concentration (MIC) for each drug.
+
+   This function processes the growth matrix of a microtitre plate, compares it with the provided plate design,
+   and calculates the MIC values for each drug tested. It also visualizes the results by overlaying growth detection
+   information on the image of the plate, optionally displaying the visualization.
+
+   :param image_name: The name of the image file used for labeling and saving results.
+   :type image_name: str
+   :param image: The image data of the plate, typically as a NumPy array.
+   :type image: numpy.ndarray
+   :param growth_matrix: A matrix indicating the growth status of each well (e.g., 'growth' or '-none-').
+   :type growth_matrix: list[list[str]]
+   :param plate_design: A dictionary containing the design of the plate, including drug, dilution, and concentration matrices.
+   :type plate_design: dict
+   :param plate_design_type: A string representing the type of plate design being used.
+   :type plate_design_type: str
+   :param output_directory: The directory where the visualization image and results should be saved.
+   :type output_directory: str
+   :param show: A boolean flag indicating whether to display the visualization of the growth matrix.
+   :type show: bool
+
+   :return: A dictionary containing the growth results and MIC values for each drug. The dictionary keys are drug names,
+            and the values are dictionaries with 'growth_array' and 'MIC' keys.
+   :rtype: Optional[dict]
+
+   :raises ValueError: If the image is not in a supported format or if there are issues with the plate design data.
+
+
+.. py:function:: extract_image_name_from_path(image_path: str) -> str
+
+   Extract the base name of an image file from a file path and remove specific suffixes.
+
+   This function takes a full file path to an image, extracts the base name of the file
+   without its extension, and removes the suffixes '-filtered' or '-raw' from the base name
+   if they are present. This is useful for standardizing image file names during processing.
+
+   :param image_path: The full file path to the image file.
+   :type image_path: str
+
+   :return: The standardized base name of the image file without the extension and without '-filtered' or '-raw' suffixes.
+   :rtype: str
+
+
+.. py:function:: extract_plate_design_type_from_image_name(image_name: str) -> str
+
+   Extract the plate design type from an image name.
+
+   Assumes that the plate design type is always the 6th element in a hyphen-separated image name string.
+
+   :param image_name: The image name string, typically in a hyphen-separated format.
+   :type image_name: str
+
+   :return: The plate design type extracted from the image name.
+   :rtype: str
+
+
+.. py:function:: analyze_and_extract_mic(image_path: str, image: Any, detections: List[List[str]], plate_design: Dict[str, Dict[str, List[List[Union[str, float]]]]], format_type: str, output_directory: str, show: bool = False) -> Optional[Dict[str, Dict[str, Union[str, List[str]]]]]
+
+   Analyze the growth matrix and extract Minimum Inhibitory Concentration (MIC) results.
+
+   This function analyzes the growth detection results from an image of a microtitre plate to determine the
+   Minimum Inhibitory Concentration (MIC) values for various drugs. It processes the image data and detection results
+   based on the provided plate design and saves the results in the specified format.
+
+   :param image_path: The full file path to the image to be processed.
+   :type image_path: str
+   :param image: The image data as a NumPy array, typically representing a microtitre plate.
+   :type image: Any
+   :param detections: A list of detection results indicating the growth status for each well on the plate.
+   :type detections: List[List[str]]
+   :param plate_design: A dictionary containing the plate design information, indexed by plate design type.
+   :type plate_design: Dict[str, Dict[str, List[List[Union[str, float]]]]]
+   :param format_type: The format in which the MIC results should be saved, either 'csv' or 'json'.
+   :type format_type: str
+   :param output_directory: The directory where the processed results and visualization should be saved.
+   :type output_directory: str
+   :param show: A boolean flag indicating whether to display the visualization images. Defaults to False.
+   :type show: bool
+   :return: A dictionary containing the MIC results and growth information for each drug, or None if the analysis fails.
+   :rtype: Optional[Dict[str, Dict[str, Union[str, List[str]]]]]
+
+
