@@ -174,10 +174,9 @@ optional arguments:
                         Display images with growth detection results.   
 ```     
 
-   
-<!-- ## Usage
+## Usage
 
-- To be updated after the Repo is public. -->
+Please read the [instruction in the documentation](https://tb-microbial-analysis-system-tmas.readthedocs.io/en/latest/?badge=latest) for detailed usage examples and module descriptions.
 
 ## Debugging
 
@@ -234,8 +233,12 @@ If you finished installing `TMAS` package but `run_tmas` direct you to your gith
    - folder_path: The path to the folder of the raw images
    - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
-<!-- ## Contributing
-Please refer to this link for the guides (to be updated when the Repo is public) -->
+
+## Documentation
+Comprehensive documentation for each module is available in the `docs/` directory, covering usage examples, API references, and more.
+
+## Contributing
+We welcome contributions! Please read the [CONTRIBUTING.md](tmas/CONTRIBUTING.md) file for guidelines on how to contribute to this project.
 
 ## License
 
