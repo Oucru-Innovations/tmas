@@ -88,6 +88,26 @@
 <h2><a class="reference internal" href="#usage"><span class="std std-ref">Usage</span></a><a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">TMAS</span></code> can be used to detect growth in a 96-well plate and calculate the MIC result of each drug based on the assigned plate design (<em>UKMYC5</em> or <em>UKMYC6</em>) and plot the results</p>
 </section>
+<section id="installation-python-package">
+<h2><a class="reference internal" href="#installation-python"><span class="std std-ref">Installation - Python Package</span></a><a class="headerlink" href="#installation-python-package" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">TMAS</span></code> PyPi package:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">tmas</span><span class="o">==</span><span class="m">1</span>.0.1
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">TMAS</span></code>:</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>-visualize<span class="w"> </span><span class="o">[</span>folder_path<span class="o">]</span><span class="w"> </span><span class="o">[</span>output_format<span class="o">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>(Optional) -visualize/–visualize: to illustrate the output image</p></li>
+<li><p>folder_path: The path to the folder of the raw images</p></li>
+<li><p>output_format: output MIC of each drug in <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> file (default format is <code class="docutils literal notranslate"><span class="pre">csv</span></code>)</p></li>
+</ul>
+</section>
 <section id="id2">
 <h2><a class="reference internal" href="#installation-github"><span class="std std-ref">Installation - GitHub</span></a><a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
@@ -115,26 +135,6 @@
 <li><p>output_format: output MIC of each drug in <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> file (default format is <code class="docutils literal notranslate"><span class="pre">csv</span></code>)</p></li>
 </ul>
 <p>If encounting any error in Installing the packages, please refer to the Debugging section.</p>
-</section>
-<section id="installation-python-package">
-<h2><a class="reference internal" href="#installation-python"><span class="std std-ref">Installation - Python Package</span></a><a class="headerlink" href="#installation-python-package" title="Link to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Install <code class="docutils literal notranslate"><span class="pre">TMAS</span></code> PyPi package:</p></li>
-</ol>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">tmas</span><span class="o">==</span><span class="m">1</span>.0.1
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">TMAS</span></code>:</p></li>
-</ol>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>run_tmas<span class="w"> </span>-visualize<span class="w"> </span><span class="o">[</span>folder_path<span class="o">]</span><span class="w"> </span><span class="o">[</span>output_format<span class="o">]</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>(Optional) -visualize/–visualize: to illustrate the output image</p></li>
-<li><p>folder_path: The path to the folder of the raw images</p></li>
-<li><p>output_format: output MIC of each drug in <code class="docutils literal notranslate"><span class="pre">csv</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> file (default format is <code class="docutils literal notranslate"><span class="pre">csv</span></code>)</p></li>
-</ul>
 </section>
 <section id="tutorial-to-be-updated-when-the-examples-are-uploaded">
 <h2><a class="reference internal" href="#tutorial"><span class="std std-ref">Tutorial</span></a> (to be updated when the examples are uploaded)<a class="headerlink" href="#tutorial-to-be-updated-when-the-examples-are-uploaded" title="Link to this heading"></a></h2>
@@ -208,6 +208,8 @@ After <code class="docutils literal notranslate"><span class="pre">TMAS</span></
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#v1-0-0-2024-08-16">[v1.0.0] - 2024-08-16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v1-0-1-2024-09-02">[v1.0.1] - 2024-09-02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v1-0-2-2024-09-22">[v1.0.2] - 2024-09-22</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>

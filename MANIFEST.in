@@ -1,4 +1,5 @@
 graft config
 graft data
 graft tmas/src/models
+graft tmas/docs
 global-exclude *.pyc *.pyo _pycache_

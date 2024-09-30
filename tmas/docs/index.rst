@@ -164,6 +164,3 @@ Not only that, the growth detection image and the MIC results file with the chos
    changelog.md
    contributing.md
    conduct.md
-
-
-

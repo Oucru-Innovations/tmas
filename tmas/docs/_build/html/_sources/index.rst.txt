@@ -31,6 +31,25 @@ Overview
 --------------------
 ``TMAS`` can be used to detect growth in a 96-well plate and calculate the MIC result of each drug based on the assigned plate design (*UKMYC5* or *UKMYC6*) and plot the results
 
+:ref:`Installation - Python Package<installation-python>`
+-------------------------------------------------------------------------
+
+1. Install ``TMAS`` PyPi package:
+
+.. code-block:: console
+
+   $ pip install tmas==1.0.1
+
+2. Run ``TMAS``:
+
+.. code-block:: console
+
+   $ run_tmas -visualize [folder_path] [output_format]
+
+- (Optional) -visualize/--visualize: to illustrate the output image 
+- folder_path: The path to the folder of the raw images
+- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+
 :ref:`Installation - GitHub <installation-github>`
 --------------------------------------------------
 
@@ -59,24 +78,7 @@ Overview
 
 If encounting any error in Installing the packages, please refer to the Debugging section.
 
-:ref:`Installation - Python Package<installation-python>`
--------------------------------------------------------------------------
 
-1. Install ``TMAS`` PyPi package:
-
-.. code-block:: console
-
-   $ pip install tmas==1.0.1
-
-2. Run ``TMAS``:
-
-.. code-block:: console
-
-   $ run_tmas -visualize [folder_path] [output_format]
-
-- (Optional) -visualize/--visualize: to illustrate the output image 
-- folder_path: The path to the folder of the raw images
-- output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
 :ref:`Tutorial<tutorial>` (to be updated when the examples are uploaded)
 ------------------------------------------------------------------------
@@ -162,6 +164,3 @@ Not only that, the growth detection image and the MIC results file with the chos
    changelog.md
    contributing.md
    conduct.md
-
-
-

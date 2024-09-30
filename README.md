@@ -1,19 +1,16 @@
 # TB Microbial Analysis System (TMAS)
 
 ![GitHub stars](https://img.shields.io/github/stars/Oucru-Innovations/tmas?style=social)
-<!-- ![Build Status](https://github.com/Oucru-Innovations/vital-DSP/actions/workflows/ci.yml/badge.svg) -->
-
-[![codecov](https://codecov.io/gh/Oucru-Innovations/tmas/branch/master/graph/badge.svg)](https://codecov.io/gh/Oucru-Innovations/tmas)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 ![Python Versions](https://img.shields.io/badge/python-3.10%2B-blue)
-[![Documentation Status](https://readthedocs.org/projects/tb-microbial-analysis-system-tmas/badge/?version=latest)](tb-microbial-analysis-system-tmas.readthedocs.io/en/latest/?badge=latest)
-
 ![PyPI Downloads](https://img.shields.io/pypi/dm/tmas)
-[![PyPI version](https://badge.fury.io/py/tmas.svg)](https://badge.fury.io/py/tmas)
 
-<!-- ![PyPI Downloads](https://img.shields.io/pypi/dm/vitalDSP)
-[![PyPI version](https://badge.fury.io/py/vitalDSP.svg)](https://badge.fury.io/py/vitalDSP) -->
+[![PyPI version](https://badge.fury.io/py/tmas.svg)](https://badge.fury.io/py/tmas)
+[![Documentation Status](https://readthedocs.org/projects/tb-microbial-analysis-system-tmas/badge/?version=latest)](tb-microbial-analysis-system-tmas.readthedocs.io/en/latest/?badge=latest)
+<!-- ![Build Status](https://github.com/Oucru-Innovations/tmas/actions/workflows/ci.yml/badge.svg) -->
+
+
+<!-- [![codecov](https://codecov.io/gh/Oucru-Innovations/tmas/branch/master/graph/badge.svg)](https://codecov.io/gh/Oucru-Innovations/tmas) -->
 
 ## Overview
 
@@ -31,7 +28,7 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
 ### Installation - Python Package
 1. Install the Python package from PyPi
    ```bash
-   $ pip install tmas==1.0.1
+   $ pip install tmas==1.0.2
    ```
 
 2. Run ``TMAS`` on your Terminal
@@ -40,6 +37,7 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
    ```
 - folder_path: The direct path to the folder of the raw images
 - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+   
 
    or
 
@@ -48,6 +46,7 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
    ```
 - file_path: The path to the raw image
 - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+- **NOTE**: Make sure your `file_path` ends with ***-raw.png***
 
 ### Installation - GitHub
 
@@ -73,6 +72,8 @@ The package uses deep learning to detect M. tuberculosis growth in 96-well micro
 
 - file_path: the direct path to the raw image
 - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
+- **NOTE**: Make sure your `file_path` ends with ***-raw.png***
+
 
    or
 
@@ -174,9 +175,9 @@ optional arguments:
 ```     
 
    
-## Usage
+<!-- ## Usage
 
-- To be updated after the Repo is public.
+- To be updated after the Repo is public. -->
 
 ## Debugging
 
@@ -211,7 +212,7 @@ optional arguments:
 
 - folder_path: the folder contains the image
 - output_format: output MIC of each drug in csv or json file
-- Example: please refer to ``Tutorial Session``
+- **Example**: please refer to ``Tutorial Session``
 
 If you finished installing `TMAS` package but `run_tmas` direct you to your github path, you can try creating a virtual environment and try installing the package again:
 
@@ -233,13 +234,13 @@ If you finished installing `TMAS` package but `run_tmas` direct you to your gith
    - folder_path: The path to the folder of the raw images
    - output_format: output MIC of each drug in ``csv`` or ``json`` file (default format is ``csv``)
 
-## Contributing
-Please refer to this link for the guides (to be updated when the Repo is public)
+<!-- ## Contributing
+Please refer to this link for the guides (to be updated when the Repo is public) -->
 
 ## License
 
-`tmas` was created by RMIT 2OO2 TEAM. It is licensed under the terms of the MIT license.
+`TMAS` was created by RMIT 2OO2 TEAM. It is licensed under the terms of the MIT license.
 
 ## Credits
 
-`tmas` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+`TMAS` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).

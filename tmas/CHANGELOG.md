@@ -7,3 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.0.0] - 2024-08-16
 ### Added
 - **TMAS**: Implements a pipeline that can detect the presence of M. tuberculosis growth in 96-well microtiter plates and determines Minimum Inhibitory Concentrations (MICs).
+
+## [v1.0.1] - 2024-09-02
+
+## [v1.0.2] - 2024-09-22
+### Added
+- **Documentation**: Updated the instructions to install `TMAS` package

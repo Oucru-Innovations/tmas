@@ -23,7 +23,7 @@ print("Detected packages:", packages)  # This should print the packages detected
 
 setup(
     name="tmas",
-    version="1.0.1",
+    version="1.0.2",
     author="Hoang-Anh T Vo, Sang Nguyen, Ai-Quynh T Tran, Han Nguyen",
     author_email='tmas.2002team@gmail.com', 
     description='The package uses deep learning to detect M. tuberculosis growth in 96-well microtiter plates and determines **Minimum Inhibitory Concentrations (MICs)**.',
