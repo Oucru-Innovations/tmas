@@ -11,13 +11,22 @@ build:
   tools:
     python: "3.9"
   jobs:
-    post_create_environment:
-      # Install poetry
-      # https://python-poetry.org/docs/#installing-manually
-      - pip install poetry
     post_install:
-      - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install
-      
+      - # Match this with the 'python_requires' in setup.py
+      - pip install git+https://github.com/Oucru-Innovations/tmas.git
+python:
+  install:
+    - requirements: docs/requirements.txt
+    - method: pip
+      path: .
+
+# Custom configurations for the documentation builder
+formats:
+  - pdf
+  - epub
+
+  
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
-  configuration: docs/conf.py
+  configuration: tmas/docs/conf.py
+  builder: html
