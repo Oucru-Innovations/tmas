@@ -135,7 +135,7 @@ If encounting any error in Installing the packages, please refer to the Debuggin
    ```
 3. Growth detection output:
 
-   ![Output Example](tmas\docs\OutputImage.png)
+   ![Output Example](tmas/docs/_static/OutputImage.png)
 
 4. Output files:
    After ``TMAS`` has done running, the growth detection and MIC results will be displayed in your terminal.

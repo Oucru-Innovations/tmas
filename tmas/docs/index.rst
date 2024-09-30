@@ -25,7 +25,6 @@ Overview
 --------
 
 - The package uses deep learning to detect M. tuberculosis growth in 96-well microtiter plates and determines **Minimum Inhibitory Concentrations (MICs)**.
-.. - The model weights (``best_model_yolo.pt``) is downloaded automatically and separately to avoid including large files directly in the package. It is downloaded only once.
 
 :ref:`Usage <usage>`
 --------------------
@@ -130,10 +129,9 @@ or
 
 3. Growth detection output:
 
-.. image:: ../../data/1/output/sampleoutput.png
+.. image:: _static/OutputExample.png
    :alt: Output Example
    :width: 600px
-
 
 4. Output files:
 After ``TMAS`` has done running, the growth detection and MIC results will be displayed in your terminal.
